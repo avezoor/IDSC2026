@@ -4,6 +4,12 @@ Dokumen ini dibuat untuk membantu penyusunan report/final write-up dari pipeline
 
 ## 1. Framing Utama di Report
 
+Sebelum masuk ke ranking model, tulis posisi metodologinya dengan tegas:
+
+`This project uses ECG-only as the primary benchmark to avoid shortcut learning from metadata. Clinical metadata may be informative, but including it in the main classifier could make the model look better for the wrong reason rather than proving stronger ECG understanding.`
+
+Kalau ingin membahas metadata, posisikan hanya sebagai analisis tambahan atau ablation, bukan sebagai model utama.
+
 Jangan tampilkan hanya satu "winner". Report sebaiknya selalu memisahkan dua perspektif:
 
 - `Best aggregate model`
@@ -20,6 +26,10 @@ Jika berbeda, katakan bahwa perbedaan ini penting dan memang diharapkan pada tug
 Tambahkan satu kalimat yang blak-blakan soal risiko evaluasi:
 
 `Because multiple models were compared on a single held-out test split, the leaderboard should be interpreted as a useful benchmark rather than a definitive estimate of out-of-sample superiority.`
+
+Tambahkan juga satu kalimat yang jelas soal fairness feature set:
+
+`The main comparison excludes metadata such as basal_pattern and sudden_death so that the reported benchmark remains ECG-driven, fair, and clinically defensible.`
 
 ## 2. Cara Menulis Pemilihan Threshold
 
@@ -129,6 +139,10 @@ Artefak yang bisa dipakai:
 - `predict/clinical_candidate_false_negatives.csv`
 - `plots/failure_false_negative_patient_*_v1_v3.png`
 - `plots/failure_analysis_basal_pattern_vs_outcome.png`
+
+Kalau artefak metadata ikut ditampilkan, beri framing yang jelas:
+
+`Metadata-based patterns are presented only as a supplementary sensitivity analysis. They are not part of the primary ECG-only benchmark and should not be used to claim that the main classifier is better.`
 
 ## 7. Sitasi Dataset yang Harus Ada
 
