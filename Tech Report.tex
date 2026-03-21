@@ -43,7 +43,7 @@
 \maketitle
 
 \begin{abstract}
-This project benchmarks ECG-driven machine learning and deep learning models for binary Brugada syndrome screening on the Brugada-HUCA dataset. We deliberately use an ECG-only primary benchmark to avoid shortcut learning from metadata such as \texttt{basal\_pattern} and \texttt{sudden\_death}. After excluding seven label-2 atypical cases, the final binary benchmark contains 356 patients (287 Normal, 69 Brugada), evaluated with one shared patient-level split across 11 models. In the final rerun, an in-domain transfer-learning pipeline emerged as the strongest aggregate, clinical-safety, and balanced multi-aspect candidate (PR-AUC 0.676, F1 0.692, sensitivity 0.643, specificity 0.948). Feature-model interpretability still emphasizes V2 and V1, while sequence saliency for the final transfer-learning classifier is more distributed, with V1 strongest and additional signal on V2 plus selected limb leads. We therefore position the system as research-stage decision support rather than autonomous diagnosis.
+This project benchmarks ECG-driven machine learning and deep learning models for binary Brugada syndrome screening on the Brugada-HUCA dataset. We deliberately use an ECG-only primary benchmark to avoid shortcut learning from metadata such as \texttt{basal\_pattern} and \texttt{sudden\_death}. After excluding seven label-2 atypical cases, the final binary benchmark contains 356 patients (287 Normal, 69 Brugada), evaluated with one shared patient-level split across 11 models. The reported benchmark results place an in-domain transfer-learning pipeline as the strongest aggregate model, the top clinical-safety model, and the final recommendation from the balanced multi-aspect ranking (PR-AUC 0.676, F1 0.692, sensitivity 0.643, specificity 0.948). Feature-model interpretability still emphasizes V2 and V1, while sequence saliency for the transfer-learning classifier is more distributed, with V1 strongest and additional signal on V2 plus selected limb leads. We therefore position the system as research-stage decision support rather than autonomous diagnosis.
 \end{abstract}
 
 \section{Problem Statement and Dataset Justification}
@@ -90,7 +90,7 @@ Our pipeline follows one shared patient-level stratified split for every model s
 For reproducibility, the generated benchmark artifacts are organized in the project repository \cite{idsc2026repo} under \texttt{outputs/} (leaderboards and logs), \texttt{outputs/predict} (predictions and detailed analysis tables), and \texttt{outputs/plots} (figures used in this report).
 
 \section{Results and Validation}
-All 11 candidate models trained successfully on the final pipeline. In this rerun, the aggregate winner and the safety-oriented winner converged on the same model, which is helpful rather than trivial: it means the top overall model also provided the strongest false-negative profile among the tested candidates on this split.
+All 11 candidate models trained successfully in the reported pipeline. The aggregate winner and the safety-oriented winner are the same model, which is helpful rather than trivial: it means the top overall model also provided the strongest false-negative profile among the tested candidates on this split.
 
 \begin{table}[!t]
 \centering
