@@ -1,15 +1,19 @@
 # **IDSC2026 Brugada-HUCA Classification**
 
 <p align="left">
-  <img src="https://img.shields.io/badge/VZ%20Team-16a34a?style=for-the-badge&logoColor=white" alt="VZ Team" />
+  <img src="https://img.shields.io/badge/Team%20VZ-16a34a?style=for-the-badge&logoColor=white" alt="Team VZ" />
   
   <a href="https://www.kaggle.com/code/izzarsulynashrudin/idsc2026brugadahuca" target="_blank">
-    <img src="https://img.shields.io/badge/Open%20in%20Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white" alt="Open in Kaggle" />
+    <img src="https://img.shields.io/badge/Try%20in%20Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white" alt="Try in Kaggle" />
   </a>
   
   <a href="https://github.com/avezoor/IDSC2026" target="_blank">
     <img src="https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="Repository" />
+  <a href="https://github.com/avezoor/IDSC2026/blob/main/Tech%20Report.pdf" target="_blank">
+    <img src="https://img.shields.io/badge/Tech%20Report-181717?style=for-the-badge&logo=googledocs&logoColor=white" alt="Tech Report" />
   </a>
+ </p><p>
+  The results on Kaggle and GitHub were significantly different, so we decided to use the GitHub results because they are reproducible.
 </p>
 
 # 1. Installation

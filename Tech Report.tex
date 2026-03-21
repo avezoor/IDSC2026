@@ -12,7 +12,7 @@
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage[section]{placeins}
-\usepackage[hidelinks]{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
 \captionsetup{font=small}
 \graphicspath{{outputs/plots/}{plots/}}
@@ -34,7 +34,7 @@
 
 \title{\textbf{\Huge TECH REPORT}\\[4pt]
 \Large ECG-Only Brugada Syndrome Screening on Brugada-HUCA\\
-\Large Using Transfer Learning, ResNet-1D, and\\
+\Large Using Transfer Learning and\\
 \Large Safety-Oriented Model Selection Framework}
 \author{\textbf{Team VZ}\\[3pt]Izzar Suly Nashrudin and Risma Muslimah}
 \date{}
@@ -43,7 +43,7 @@
 \maketitle
 
 \begin{abstract}
-This project benchmarks ECG-driven machine learning and deep learning models for binary Brugada syndrome screening on the Brugada-HUCA dataset. We deliberately use an ECG-only primary benchmark to avoid shortcut learning from metadata such as \texttt{basal\_pattern} and \texttt{sudden\_death}. After excluding seven label-2 atypical cases, the final binary benchmark contains 356 patients (287 Normal, 69 Brugada), evaluated with one shared patient-level split across 11 models. The best aggregate model is an in-domain transfer-learning pipeline (PR-AUC 0.694, F1 0.696), while the best safety-oriented model is a ResNet-1D median-beat classifier with higher sensitivity (0.643 vs.\ 0.571) and one fewer false negative. Interpretability analyses consistently highlight right precordial information, especially V1--V3, which is clinically plausible for Brugada syndrome. We position the resulting system as research-stage decision support rather than autonomous diagnosis.
+This project benchmarks ECG-driven machine learning and deep learning models for binary Brugada syndrome screening on the Brugada-HUCA dataset. We deliberately use an ECG-only primary benchmark to avoid shortcut learning from metadata such as \texttt{basal\_pattern} and \texttt{sudden\_death}. After excluding seven label-2 atypical cases, the final binary benchmark contains 356 patients (287 Normal, 69 Brugada), evaluated with one shared patient-level split across 11 models. In the final rerun, an in-domain transfer-learning pipeline emerged as the strongest aggregate, clinical-safety, and balanced multi-aspect candidate (PR-AUC 0.676, F1 0.692, sensitivity 0.643, specificity 0.948). Feature-model interpretability still emphasizes V2 and V1, while sequence saliency for the final transfer-learning classifier is more distributed, with V1 strongest and additional signal on V2 plus selected limb leads. We therefore position the system as research-stage decision support rather than autonomous diagnosis.
 \end{abstract}
 
 \section{Problem Statement and Dataset Justification}
@@ -87,10 +87,10 @@ Our pipeline follows one shared patient-level stratified split for every model s
 
 \textbf{Evaluation strategy.} We report both a leaderboard-oriented ranking and a safety-oriented clinical ranking. The first emphasizes PR-AUC, F1, sensitivity, balanced accuracy, and correct Brugada detections. The second prioritizes sensitivity and false-negative control. Because multiple models were compared on a single held-out test split, the leaderboard should be interpreted as a useful benchmark rather than a definitive estimate of out-of-sample superiority.
 
-For reproducibility, the generated benchmark artifacts are organized in the repository under \texttt{outputs/} (leaderboards and logs), \texttt{outputs/predict} (predictions and detailed analysis tables), and \texttt{outputs/plots} (figures used in this report).
+For reproducibility, the generated benchmark artifacts are organized in the project repository \cite{idsc2026repo} under \texttt{outputs/} (leaderboards and logs), \texttt{outputs/predict} (predictions and detailed analysis tables), and \texttt{outputs/plots} (figures used in this report).
 
 \section{Results and Validation}
-All 11 candidate models trained successfully on the final pipeline. The aggregate winner and the safety-oriented winner are different, which is clinically important rather than inconvenient: it shows that the model with the best global score is not automatically the best screening narrative.
+All 11 candidate models trained successfully on the final pipeline. In this rerun, the aggregate winner and the safety-oriented winner converged on the same model, which is helpful rather than trivial: it means the top overall model also provided the strongest false-negative profile among the tested candidates on this split.
 
 \begin{table}[!t]
 \centering
@@ -103,25 +103,25 @@ All 11 candidate models trained successfully on the final pipeline. The aggregat
 \toprule
 Track & Model & Thr. & PR-AUC & F1 & Sens. & Spec. & FN & FP \\
 \midrule
-Aggregate & Transfer Learning (DAE) & 0.594 & 0.694 & 0.696 & 0.571 & 0.983 & 6 & 1 \\
-Clinical & ResNet-1D Median Beat & 0.517 & 0.572 & 0.643 & 0.643 & 0.914 & 5 & 5 \\
+Aggregate & Transfer Learning (DAE) & 0.354 & 0.676 & 0.692 & 0.643 & 0.948 & 5 & 3 \\
+Clinical & Transfer Learning (DAE) & 0.354 & 0.676 & 0.692 & 0.643 & 0.948 & 5 & 3 \\
 \bottomrule
 \end{tabular}
 }
 \end{table}
 
-The transfer-learning model leads the aggregate leaderboard because it offers the strongest precision-recall behavior and the cleanest specificity profile. However, the ResNet-1D clinical candidate improves sensitivity by 0.071 and reduces false negatives by one case, at the cost of four additional false positives. For a screening-oriented discussion, this trade-off is acceptable and should be stated explicitly.
+The transfer-learning model now leads the aggregate leaderboard because it combines the strongest precision-recall behavior on this split with a clinically competitive operating point: it detects 9 of 14 Brugada cases while keeping false positives to 3. Unlike the earlier run, no separate clinical winner is needed to tell the screening story because the same model already gives the best balance between missed cases and unnecessary alarms among the tested finalists.
 
-A balanced multi-aspect ranking that blends aggregate performance, clinical safety, validation consistency, training effort, and available repeated-split evidence also selected the transfer-learning pipeline, with a composite score of 0.718. This supports using transfer learning as the single-model recommendation while still presenting ResNet-1D as the more defensible low-false-negative screening narrative.
+A balanced multi-aspect ranking that blends aggregate performance, clinical safety, validation consistency, training effort, and available repeated-split evidence also selected the transfer-learning pipeline, with a composite score of 0.720. This means the same transfer-learning model is now the aggregate winner, the clinical candidate, and the final single-model recommendation.
 
-\textbf{Threshold rationale.} The safety-oriented ResNet threshold was selected on the validation split at 0.517. On the held-out test set, that operating point detected 9 of 14 Brugada cases (sensitivity 0.643) and correctly rejected 53 of 58 Normal cases (specificity 0.914). A descriptive threshold scan on the same test predictions shows that lower thresholds can increase sensitivity further, but those analyses are presented only to visualize the trade-off and not to retroactively claim a better final threshold.
+\textbf{Threshold rationale.} The safety-oriented transfer-learning threshold was selected on the validation split at 0.354. On the held-out test set, that operating point detected 9 of 14 Brugada cases (sensitivity 0.643) and correctly rejected 55 of 58 Normal cases (specificity 0.948). A descriptive threshold scan on the same test predictions shows that nearby thresholds around 0.40 can preserve sensitivity while slightly improving specificity on the test split, but those analyses are presented only to visualize the trade-off and not to retroactively claim a better final threshold.
 
 \begin{figure}[!t]
 \centering
 \begin{subfigure}[t]{\linewidth}
     \centering
     \includegraphics[width=\textwidth]{Failure Analysis Clinical Candidate Threshold Tradeoff.png}
-    \caption{Clinical threshold trade-off for the ResNet-1D candidate.}
+    \caption{Clinical threshold trade-off for the transfer-learning candidate.}
 \end{subfigure}
 \vspace{6pt}
 \begin{subfigure}[t]{\linewidth}
@@ -156,9 +156,9 @@ This added stability analysis improves rigor, but it does not fully eliminate th
 \textbf{Metadata ablation.} Adding shortcut-risk metadata produced inconsistent effects: for example, XGBoost sensitivity fell from 0.571 to 0.357, while SVM sensitivity rose from 0.214 to 0.500 with worse specificity. Because these gains are not stable and may reflect shortcut learning rather than stronger ECG reasoning, the main benchmark remains ECG-only.
 
 \section{Interpretability and Clinical Impact}
-Interpretability was designed to answer a clinically relevant question: are the models focusing on plausible Brugada regions rather than arbitrary patterns? For the best interpretable feature model (XGBoost), permutation importance aggregated by lead ranked V2 first, followed by V1, with additional contribution from aVF and aVR. Within the right precordial feature set, important variables included \texttt{V2\_minus\_V3\_st\_mean}, \texttt{V1\_strip\_kurtosis}, \texttt{V2\_strip\_max}, and several V1 morphology descriptors. This is compatible with the expectation that Brugada-related morphology is most visible in V1--V3.
+Interpretability was designed to answer a clinically relevant question: are the models focusing on plausible Brugada regions rather than arbitrary patterns? For the best interpretable feature model (XGBoost), permutation importance aggregated by lead ranked V2 first, followed by V1, with additional contribution from aVF and aVR. Within the right precordial feature set, important variables included \texttt{V2\_minus\_V3\_st\_mean}, \texttt{V1\_strip\_kurtosis}, \texttt{V2\_strip\_max}, and several V1 morphology descriptors. This remains compatible with the expectation that Brugada-related morphology is often visible in V1--V3.
 
-For the best safety-oriented sequence model (ResNet-1D), gradient-based lead saliency over the top Brugada-positive test predictions ranked V3 first, with V2 and V1 also among the highest-scoring leads. The V1--V3 heatmap further shows that the network concentrates attention on clinically plausible regions of the median beat rather than distributing it uniformly across all leads and times.
+For the final transfer-learning sequence model, gradient-based lead saliency over the top Brugada-positive test predictions ranked V1 first, followed by aVF, aVL, and V2, with V3 still present but not dominant. This is more distributed than the previous ResNet-centered story, so the interpretability conclusion should be more cautious: the model still pays attention to clinically relevant precordial structure, but it also uses broader cross-lead information rather than concentrating almost exclusively on V1--V3.
 
 \begin{figure}[!t]
 \centering
@@ -171,15 +171,15 @@ For the best safety-oriented sequence model (ResNet-1D), gradient-based lead sal
 \begin{subfigure}[t]{\linewidth}
     \centering
     \includegraphics[width=\linewidth]{Interpretability Sequence V1 V3 Saliency Heatmap.png}
-    \caption{ResNet-1D saliency heatmap on the clinically relevant V1--V3 leads.}
+    \caption{Transfer-learning saliency heatmap on the inspected V1--V3 leads.}
 \end{subfigure}
-\caption{Interpretability outputs consistently highlight right precordial information.}
+\caption{Interpretability outputs retain right-precordial relevance while showing broader cross-lead use in the final sequence model.}
 \label{fig:interpretability}
 \end{figure}
 
 These interpretability outputs should be read as descriptive transparency tools. They help assess whether the model is focusing on clinically plausible ECG regions, but they do not prove causal reasoning or guarantee safe deployment.
 
-From a clinical workflow perspective, the ResNet-1D candidate is the better screening story because it catches more Brugada cases than the aggregate winner. However, it still leaves 5 false-negative Brugada cases and adds 5 false positives on the test set. Therefore, the current model is better framed as a triage aid or second-reader signal for specialist review, not as an autonomous diagnostic system.
+From a clinical workflow perspective, the transfer-learning candidate is now also the strongest screening story on this split because it catches 9 of 14 Brugada cases while adding only 3 false positives. However, it still leaves 5 false-negative Brugada cases. Therefore, the current model is better framed as a triage aid or second-reader signal for specialist review, not as an autonomous diagnostic system.
 
 \section{Limitations and Responsible Deployment}
 This study has several important limitations. First, the cohort is small and imbalanced, and the benchmark is based on a single dataset without external validation. Second, the binary setup excludes seven atypical label-2 subjects, which simplifies the real diagnostic spectrum. Third, repeated split analysis was limited to lightweight finalists for runtime reasons, so deep-model stability remains an open question. Fourth, many candidate models were compared on one held-out test split, which introduces selection optimism even when the split itself is untouched during threshold tuning.
@@ -187,6 +187,9 @@ This study has several important limitations. First, the cohort is small and imb
 For responsible deployment, any future system should undergo external validation, prospective operating-point calibration, subgroup analysis, and workflow design that clearly assigns final authority to clinicians. In short, the present results show promise for interpretable ECG-based decision support, but they are not sufficient for standalone diagnosis.
 \newpage
 \begin{thebibliography}{9}
+\bibitem{idsc2026repo}
+A. Nashrudin and R. Muslimah, ``IDSC2026,'' GitHub repository, 2026. Available: \href{https://github.com/avezoor/IDSC2026}{https://github.com/avezoor/IDSC2026}.
+
 \bibitem{brugadahuca}
 N. Costa Cortez and D. Garcia Iglesias, ``Brugada-HUCA: 12-Lead ECG Recordings for the Study of Brugada Syndrome,'' version 1.0.0, PhysioNet, 2026, RRID:SCR\_007345. doi: \href{https://doi.org/10.13026/0m2w-dy83}{10.13026/0m2w-dy83}.
 
