@@ -48,25 +48,6 @@ After all packages are installed, run:
 python main.py
 ```
 
-## 1.4 Main Outputs After Running
-
-After `python main.py`, the pipeline writes readable output filenames so the main artifacts are easy to inspect:
-
-- `outputs/Summary.csv`: leaderboard-oriented ECG-only benchmark summary.
-- `outputs/Clinical Summary.csv`: safety-oriented clinical ranking with stronger emphasis on sensitivity and false negatives.
-- `outputs/Multi Aspect Ranking.csv`: balanced ranking that combines performance, safety, efficiency, and stability evidence.
-- `outputs/Pareto Front Models.csv`: models that remain competitive on the performance / safety frontier.
-- `outputs/Best Models.txt`: short final recommendation text.
-- `outputs/Logs.txt`: end-to-end run log.
-- `outputs/plots/`: EDA, validation, interpretability, and failure-analysis figures.
-- `outputs/predict/`: per-model predictions, split files, metadata ablation exports, and stability summaries.
-- `Tech Report.tex` and `Tech Report.pdf`: report source and the compiled PDF synced to the latest rerun.
-
-**Current recommendation snapshot**
-
-- Balanced multi-aspect recommendation: `Transfer Learning (In-domain DAE to Classifier)`.
-- Safety-oriented clinical candidate: `ResNet 1D Median Beat`.
-
 # 2. Overview
 
 **Objective**
