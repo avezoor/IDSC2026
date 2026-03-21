@@ -3,7 +3,7 @@
 <p align="left">
   <img src="https://img.shields.io/badge/VZ%20Team-16a34a?style=for-the-badge&logoColor=white" alt="VZ Team" />
   
-  <a href="https://www.kaggle.com/username" target="_blank">
+  <a href="https://www.kaggle.com/code/izzarsulynashrudin/idsc2026brugadahuca" target="_blank">
     <img src="https://img.shields.io/badge/Open%20in%20Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white" alt="Open in Kaggle" />
   </a>
   

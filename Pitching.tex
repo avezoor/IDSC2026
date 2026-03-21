@@ -95,7 +95,7 @@ Use ordinary 12-lead ECGs to build a clinically honest screening aid that helps 
 \begin{enumerate}
   \item Start from raw WFDB 12-lead ECGs.
   \item Build median-beat and engineered-feature representations.
-  \item Train 11 models on the same patient-level split.
+  \item Train 11 complementary models on the same patient-level split.
   \item Tune thresholds on validation data, then test once.
 \end{enumerate}
 \end{block}
@@ -127,7 +127,45 @@ We do not let raw leaderboard score hide a poor false-negative profile.
 \end{columns}
 \end{frame}
 
-% Suggested speaking time: 1:25--2:05
+% Suggested speaking time: 1:25--1:50
+\begin{frame}[t]{Why 11 Models Matter for Healthcare Hope}
+\scriptsize
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\begin{block}{Feature-based models}
+\begin{itemize}
+  \item \textbf{XGBoost}: strong nonlinear baseline on engineered ECG biomarkers.
+  \item \textbf{Random Forest}: robust ensemble for noisy and variable patient signals.
+  \item \textbf{SVM-RBF}: captures subtle curved decision boundaries in borderline ECGs.
+  \item \textbf{AdaBoost}: focuses learning on the hardest-to-classify cases.
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{End-to-end deep models}
+\begin{itemize}
+  \item \textbf{1D CNN Median Beat}: learns local waveform cues directly from ECG morphology.
+  \item \textbf{ResNet-1D Median Beat}: goes deeper without unstable training, improving safety-oriented detection.
+  \item \textbf{CNN + BiGRU Median Beat}: combines local patterns with sequential beat context.
+  \item \textbf{Transformer Encoder Median Beat}: models wider lead-to-lead and time interactions.
+\end{itemize}
+\end{exampleblock}
+
+\column{0.48\textwidth}
+\begin{alertblock}{Transfer and advanced models}
+\begin{itemize}
+  \item \textbf{Transfer Learning (In-domain DAE to Classifier)}: reuses ECG structure learned before classification, helping when labeled data is limited.
+  \item \textbf{VICReg (Self-supervised)}: learns useful signal representations without needing labels on every step.
+  \item \textbf{Echo State Network (ESN)}: provides a lightweight dynamic sequence baseline for efficient screening.
+\end{itemize}
+\end{alertblock}
+
+\begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.8em]{block body}
+\textbf{Why this brings hope:} we did not trust one lucky algorithm. We tested 11 mathematical views of the same ECG so clinicians get a more credible, safety-aware, and practical screening aid.
+\end{beamercolorbox}
+\end{columns}
+\end{frame}
+
+% Suggested speaking time: 1:50--2:20
 \begin{frame}[t]{What the Benchmark Found}
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
@@ -163,7 +201,7 @@ The strongest leaderboard model and the safest clinical screening model are \tex
 \end{columns}
 \end{frame}
 
-% Suggested speaking time: 2:05--2:35
+% Suggested speaking time: 2:20--2:45
 \begin{frame}[t]{Why This Brings Hope to Healthcare}
 \small
 \begin{columns}[T,onlytextwidth]
@@ -196,7 +234,7 @@ It is helping them miss fewer dangerous ECGs.
 \end{columns}
 \end{frame}
 
-% Suggested speaking time: 2:35--3:00
+% Suggested speaking time: 2:45--3:00
 \begin{frame}[t]{Closing}
 \begin{block}{What we achieved}
 We built a safety-aware ECG benchmarking pipeline that turns raw 12-lead signals into a practical and clinically grounded Brugada screening aid.
