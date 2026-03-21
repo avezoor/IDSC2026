@@ -1,0 +1,231 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{ragged2e}
+
+\graphicspath{{outputs/plots/}}
+
+\definecolor{hopeblue}{RGB}{17,84,124}
+\definecolor{hopeteal}{RGB}{25,133,115}
+\definecolor{hopegold}{RGB}{203,126,41}
+\definecolor{softbg}{RGB}{245,248,250}
+\definecolor{softline}{RGB}{220,228,234}
+
+\setbeamercolor{structure}{fg=hopeblue}
+\setbeamercolor{title}{fg=hopeblue}
+\setbeamercolor{frametitle}{fg=hopeblue,bg=softbg}
+\setbeamercolor{block title}{fg=white,bg=hopeblue}
+\setbeamercolor{block body}{fg=black,bg=softbg}
+\setbeamercolor{block title alerted}{fg=white,bg=hopegold}
+\setbeamercolor{block body alerted}{fg=black,bg=softbg}
+\setbeamercolor{block title example}{fg=white,bg=hopeteal}
+\setbeamercolor{block body example}{fg=black,bg=softbg}
+
+\newcommand{\statcard}[2]{%
+  \begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.8em]{block body}
+    {\Large\textbf{#1}}\\[0.2em]
+    #2
+  \end{beamercolorbox}
+}
+
+\title{IDSC 2026 PITCH DECK}
+\subtitle{Team VZ}
+\author{Izzar Suly Nashrudin and Risma Muslimah}
+\date{}
+\titlegraphic{\includegraphics[width=0.25\linewidth]{EDA Brugada 188981 Selected Leads.png}}
+
+\begin{document}
+
+% Suggested speaking time: 0:00--0:20
+\begin{frame}[plain]
+  \centering
+  {\Huge\bfseries IDSC 2026 PITCH DECK\par}
+  \vspace{0.6em}
+  {\Large\bfseries Team VZ\par}
+  \vspace{0.5em}
+  {\large Izzar Suly Nashrudin and Risma Muslimah\par}
+  \vspace{1em}
+  \includegraphics[width=0.26\linewidth]{EDA Brugada 188981 Selected Leads.png}
+  \vspace{0.8em}
+  \par
+  \scriptsize
+  We do not just optimize accuracy. We optimize for fewer missed high-risk patients.
+\end{frame}
+
+% Suggested speaking time: 0:20--0:50
+\begin{frame}[t]{The Healthcare Problem}
+\begin{columns}[T,onlytextwidth]
+\column{0.58\textwidth}
+\justifying
+\begin{block}{Why this matters}
+\begin{itemize}
+  \item Brugada syndrome can lead to sudden cardiac death, but its ECG pattern can be subtle.
+  \item In screening, a false negative is more dangerous than an extra false alarm.
+  \item Many AI studies chase accuracy, even when the real clinical question is: \textbf{who are we still missing?}
+\end{itemize}
+\end{block}
+
+\begin{alertblock}{Our pitch}
+Use ordinary 12-lead ECGs to build a clinically honest screening aid that helps specialists miss fewer dangerous cases.
+\end{alertblock}
+
+\column{0.38\textwidth}
+\statcard{356}{binary ECG patients after excluding atypical label-2 cases}
+\vspace{0.5em}
+\statcard{69}{Brugada cases in the full benchmark cohort}
+\vspace{0.5em}
+\statcard{11}{ECG-only models compared on one shared patient split}
+\end{columns}
+\end{frame}
+
+% Suggested speaking time: 0:50--1:25
+\begin{frame}[t]{Our Mathematical and Computational Solution}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{0.55\textwidth}
+\begin{block}{Pipeline}
+\begin{enumerate}
+  \item Start from raw WFDB 12-lead ECGs.
+  \item Build median-beat and engineered-feature representations.
+  \item Train 11 models on the same patient-level split.
+  \item Tune thresholds on validation data, then test once.
+\end{enumerate}
+\end{block}
+
+\begin{exampleblock}{Clinical design choice}
+The primary benchmark is \textbf{ECG-only}. Metadata stays in a separate ablation to avoid shortcut learning.
+\end{exampleblock}
+
+\column{0.42\textwidth}
+\begin{block}{Safety-aware ranking}
+\[
+\begin{aligned}
+\text{Composite} ={}& 0.40P + 0.35S + 0.15C \\
+&+ 0.05E + 0.05T
+\end{aligned}
+\]
+\begin{itemize}
+  \item $P$: performance
+  \item $S$: safety
+  \item $C$: consistency
+  \item $E$: efficiency
+  \item $T$: stability evidence
+\end{itemize}
+\end{block}
+
+\begin{alertblock}{Key idea}
+We do not let raw leaderboard score hide a poor false-negative profile.
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+% Suggested speaking time: 1:25--2:05
+\begin{frame}[t]{What the Benchmark Found}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\begin{exampleblock}{Best single recommendation}
+\small
+\textbf{Transfer Learning (In-domain DAE to Classifier)}
+\begin{itemize}
+  \item PR-AUC: 0.694, F1: 0.696
+  \item Sensitivity: 0.571, Specificity: 0.983
+  \item False Negatives: 6
+  \item Selected by the balanced multi-aspect ranking
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{Best screening-safety story}
+\small
+\textbf{ResNet-1D Median Beat}
+\begin{itemize}
+  \item Sensitivity: 0.643, Specificity: 0.914
+  \item False Negatives: 5
+  \item Better when missing a Brugada case is the main concern
+\end{itemize}
+\end{alertblock}
+
+\column{0.48\textwidth}
+\begin{block}{Why this is important}
+\justifying
+The strongest leaderboard model and the safest clinical screening model are \textbf{not always the same}. That is exactly why our framework reports both.
+\end{block}
+
+\vspace{0.3em}
+\includegraphics[width=\linewidth,height=0.46\textheight,keepaspectratio]{Validation Clinical Candidate Confusion Matrix.png}
+\end{columns}
+\end{frame}
+
+% Suggested speaking time: 2:05--2:35
+\begin{frame}[t]{Why This Brings Hope to Healthcare}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{0.54\textwidth}
+\begin{block}{Hope comes from practicality}
+\begin{itemize}
+  \item It uses standard 12-lead ECGs already available in real care settings.
+  \item It supports earlier screening attention, where one extra review can matter.
+  \item It highlights clinically plausible V1--V3 regions instead of acting like a pure black box.
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Hope comes from honesty}
+\begin{itemize}
+  \item We explicitly surface false negatives.
+  \item We separate aggregate performance from safety-oriented decisions.
+  \item We frame the model as a second reader, not autonomous diagnosis.
+\end{itemize}
+\end{exampleblock}
+
+\column{0.42\textwidth}
+\includegraphics[width=\linewidth,height=0.39\textheight,keepaspectratio]{Interpretability Sequence V1 V3 Saliency Heatmap.png}
+
+\vspace{0.3em}
+\begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.8em]{block body}
+\centering
+\textbf{Hope is not replacing clinicians.}\\[0.2em]
+It is helping them miss fewer dangerous ECGs.
+\end{beamercolorbox}
+\end{columns}
+\end{frame}
+
+% Suggested speaking time: 2:35--3:00
+\begin{frame}[t]{Closing}
+\begin{block}{What we achieved}
+We built a safety-aware ECG benchmarking pipeline that turns raw 12-lead signals into a practical and clinically grounded Brugada screening aid.
+\end{block}
+
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\begin{exampleblock}{Near-term value}
+\begin{itemize}
+  \item Triage support
+  \item Second-reader assistance
+  \item Better prioritization for specialist review
+\end{itemize}
+\end{exampleblock}
+
+\column{0.48\textwidth}
+\begin{alertblock}{Next step}
+\begin{itemize}
+  \item External validation
+  \item Prospective threshold calibration
+  \item Real clinical workflow integration
+\end{itemize}
+\end{alertblock}
+\end{columns}
+
+\vspace{0.6em}
+\centering
+\Large\textbf{From ordinary ECGs to earlier action.}\\[0.2em]
+\large That is the kind of hope AI should bring to healthcare.
+\end{frame}
+
+\end{document}

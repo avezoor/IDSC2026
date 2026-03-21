@@ -1,16 +1,20 @@
 # **IDSC2026 Brugada-HUCA Classification**
 
-<div>
-  <a
-    style="display:inline-block;padding:8px 14px;background:#20BEFF;color:#111111;text-decoration:none;border-radius:8px;font-weight:600;"
-  >
-    VZ Team
+<p align="left">
+  <img src="https://img.shields.io/badge/VZ%20Team-16a34a?style=for-the-badge&logoColor=white" alt="VZ Team" />
+  
+  <a href="https://www.kaggle.com/username" target="_blank">
+    <img src="https://img.shields.io/badge/Open%20in%20Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white" alt="Open in Kaggle" />
   </a>
-</div>
+  
+  <a href="https://github.com/avezoor/IDSC2026" target="_blank">
+    <img src="https://img.shields.io/badge/Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="Repository" />
+  </a>
+</p>
 
 # 1. Installation
 
-Install the dependencies from [package.txt](/home/avezoor/Unduhan/IDSC2026/package.txt) before running the pipeline.
+Install the dependencies from [requirements.txt](requirements.txt) before running the pipeline.
 
 ## 1.1 Create Virtual Environment
 
@@ -27,13 +31,13 @@ If you are using Windows PowerShell:
 .venv\Scripts\Activate.ps1
 ```
 
-## 1.2 Install Dependencies From `package.txt`
+## 1.2 Install Dependencies From `requirements.txt`
 
 Run the following commands from the project root:
 
 ```bash
 python -m pip install --upgrade pip
-python -m pip install -r package.txt
+python -m pip install -r requirements.txt
 ```
 
 ## 1.3 Run The Project
@@ -43,6 +47,25 @@ After all packages are installed, run:
 ```bash
 python main.py
 ```
+
+## 1.4 Main Outputs After Running
+
+After `python main.py`, the pipeline writes readable output filenames so the main artifacts are easy to inspect:
+
+- `outputs/Summary.csv`: leaderboard-oriented ECG-only benchmark summary.
+- `outputs/Clinical Summary.csv`: safety-oriented clinical ranking with stronger emphasis on sensitivity and false negatives.
+- `outputs/Multi Aspect Ranking.csv`: balanced ranking that combines performance, safety, efficiency, and stability evidence.
+- `outputs/Pareto Front Models.csv`: models that remain competitive on the performance / safety frontier.
+- `outputs/Best Models.txt`: short final recommendation text.
+- `outputs/Logs.txt`: end-to-end run log.
+- `outputs/plots/`: EDA, validation, interpretability, and failure-analysis figures.
+- `outputs/predict/`: per-model predictions, split files, metadata ablation exports, and stability summaries.
+- `Tech Report.tex` and `Tech Report.pdf`: report source and the compiled PDF synced to the latest rerun.
+
+**Current recommendation snapshot**
+
+- Balanced multi-aspect recommendation: `Transfer Learning (In-domain DAE to Classifier)`.
+- Safety-oriented clinical candidate: `ResNet 1D Median Beat`.
 
 # 2. Overview
 
@@ -54,7 +77,7 @@ Classify Brugada Syndrome versus Normal ECG recordings from the Brugada-HUCA dat
 
 1. Locate the dataset automatically and validate the expected recording structure, metadata, 12-lead coverage, 100 Hz sampling, and 12-second duration.
 2. Explore label balance and metadata distributions while keeping the final primary benchmark focused on ECG evidence rather than shortcut-risk clinical metadata.
-3. Build explicit notebook-level preprocessing, engineered ECG features, and median-beat sequence representations from the raw WFDB records.
+3. Build explicit preprocessing, engineered ECG features, and median-beat sequence representations from the raw WFDB records.
 4. Create one shared stratified patient split so every model is compared on the same train, validation, and test partitions.
 5. Use `ECG-only` as the primary benchmark and reserve `ECG + metadata` for a separate ablation so shortcut learning can be discussed transparently without contaminating the main comparison.
 6. Train 11 ECG-only models across feature-based, deep learning, and transfer-learning families with imbalance-aware weighting and validation-based threshold tuning.
@@ -64,14 +87,14 @@ Classify Brugada Syndrome versus Normal ECG recordings from the Brugada-HUCA dat
 **Why this approach**
 
 - All models below use the same patient split data so the direct benchmark stays fair.
-- The notebook checks that the dataset matches the expected cohort structure: 363 subjects, 76 Brugada cases, 287 Normal controls, 12 leads, 100 Hz, and 12-second records.
+- The pipeline checks that the dataset matches the expected cohort structure: 363 subjects, 76 Brugada cases, 287 Normal controls, 12 leads, 100 Hz, and 12-second records.
 - The Brugada class is the minority class, so the evaluation emphasizes PR-AUC, F1, sensitivity, balanced accuracy, threshold analysis, and Brugada case detection instead of raw accuracy alone.
 - The primary benchmark is ECG-only. Metadata such as `basal_pattern` and `sudden_death` are analyzed separately because they may act as shortcut clinical signals rather than pure ECG evidence.
 - This project uses ECG-only as the primary benchmark to avoid shortcut learning from metadata and to keep the main model comparison fair, clinically defensible, and genuinely ECG-driven.
-- The notebook reports both the aggregate winner and the safety-oriented clinical candidate because the model with the best overall ranking may still be suboptimal for a Brugada screening narrative if too many true Brugada cases are missed.
-- The dataset is loaded as raw ECG data, so filtering, normalization, median-beat extraction, and feature engineering remain explicit notebook-level choices.
+- The final outputs report both the aggregate winner and the safety-oriented clinical candidate because the model with the best overall ranking may still be suboptimal for a Brugada screening narrative if too many true Brugada cases are missed.
+- The dataset is loaded as raw ECG data, so filtering, normalization, median-beat extraction, and feature engineering remain explicit pipeline preprocessing choices.
 - Interpretability is included through feature importance and sequence saliency, with special attention to the right precordial leads `V1-V3`, but these outputs are treated as descriptive transparency rather than proof of causal reasoning.
-- Repeated split stability analysis is included to strengthen validation rigor, although the notebook still acknowledges that one held-out test split across many candidate models remains vulnerable to model-selection optimism.
+- Repeated split stability analysis is included to strengthen validation rigor, although the project still acknowledges that one held-out test split across many candidate models remains vulnerable to model-selection optimism.
 - Any model selected here should be discussed as research-oriented decision support, not as an autonomous clinical diagnostic system.
 
 **References / Citation**
@@ -94,7 +117,7 @@ Install the required packages only when they are missing from the current enviro
 
 ## 3.2 Import Libraries and Prepare Local Output Folders
 
-Import the core libraries, set the random seed, and prepare the local `outputs/plots/` and `outputs/predict/` folders for artifacts generated by the notebook.
+Import the core libraries, set the random seed, and prepare the local `outputs/plots/` and `outputs/predict/` folders for artifacts generated by the pipeline.
 
 ## 3.3 Locate Dataset Automatically
 
@@ -128,7 +151,7 @@ This section cleans the signal, extracts the median beat, and builds both the fe
 
 Create the filtering, robust normalization, R-peak detection, and median beat extraction helpers.
 
-Important note: the dataset is loaded as raw ECG data, and the filtering and normalization below are notebook-level preprocessing choices added after loading the raw WFDB records.
+Important note: the dataset is loaded as raw ECG data, and the filtering and normalization below are explicit pipeline preprocessing choices added after loading the raw WFDB records.
 
 ## 5.2 Define Feature Engineering Helpers
 
@@ -204,7 +227,7 @@ Train `Transfer Learning`, `VICReg`, and `ESN`, then save the prediction output 
 
 # 8. Validation
 
-This section ranks the models, compares the metrics, and adds supporting validation analyses. Because the dataset is imbalanced, the notebook reports both a leaderboard-oriented ranking and a safety-oriented ranking that gives earlier priority to Brugada sensitivity and false-negative control. The main comparison still relies on one held-out test split across many models, so the results should be interpreted with explicit caution about model-selection optimism.
+This section ranks the models, compares the metrics, and adds supporting validation analyses. Because the dataset is imbalanced, the pipeline reports both a leaderboard-oriented ranking and a safety-oriented ranking that gives earlier priority to Brugada sensitivity and false-negative control. The main comparison still relies on one held-out test split across many models, so the results should be interpreted with explicit caution about model-selection optimism.
 
 ## 8.1 Build Leaderboards and Save Summary Files
 
@@ -235,15 +258,15 @@ Add model explanations that can be shown to judges: permutation importance for E
 - The primary benchmark is ECG-only. `basal_pattern` and `sudden_death` are kept out of the main model comparison because they can act as shortcut-risk clinical metadata.
 - If metadata improves the score, that result should be interpreted as a shortcut-risk sensitivity analysis, not as evidence that the primary ECG model is genuinely better.
 - The dataset is small, imbalanced, and single-center. Even with repeated patient-level split checks, the variance of the results can still be high.
-- The notebook compares many models on one held-out test split, so the reported ranking is still vulnerable to model-selection optimism.
+- The project compares many models on one held-out test split, so the reported ranking is still vulnerable to model-selection optimism.
 - The leaderboard winner is not automatically the strongest clinical choice. A model can rank first on aggregate metrics while still having a sensitivity that is difficult to defend for Brugada screening.
 - False negatives remain a major safety concern in Brugada screening. Any candidate model should be discussed as decision support, not as an autonomous diagnostic replacement.
 - Threshold choice should be calibrated prospectively and re-validated externally before any real deployment claim is made.
-- Interpretability plots in this notebook are descriptive analyses for transparency, not proof of causal clinical reasoning. Their role is to support a clinically coherent argument, not to replace prospective validation or electrophysiology expertise.
+- Interpretability plots in this project are descriptive analyses for transparency, not proof of causal clinical reasoning. Their role is to support a clinically coherent argument, not to replace prospective validation or electrophysiology expertise.
 
 # 9. Summary
 
-This final section prints both the leaderboard winner and the safety-oriented clinical candidate. The notebook keeps those two perspectives separate so the competition-facing result does not hide a poor false-negative profile.
+This final section prints both the leaderboard winner and the safety-oriented clinical candidate. The final report keeps those two perspectives separate so the competition-facing result does not hide a poor false-negative profile.
 
 ## 9.1 Print Final Decision and Log File
 
