@@ -29,7 +29,12 @@ import seaborn as sns
 import tensorflow as tf
 import wfdb
 
-from IPython.display import display
+try:
+    from IPython.display import display
+except ModuleNotFoundError:
+    def display(*objects):
+        for obj in objects:
+            print(obj)
 from scipy.signal import butter, filtfilt, find_peaks, savgol_filter
 from scipy.stats import kurtosis, skew
 from sklearn.base import clone
@@ -65,12 +70,12 @@ standardLeads = ["I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", 
 sns.set_style("whitegrid")
 plt.rcParams["figure.figsize"] = (12, 4)
 
-projectRoot = Path.cwd()
+projectRoot = Path.cwd().resolve()
 datasetDir = projectRoot / "datasets"
 outputRoot = projectRoot / "outputs"
 plotDir = outputRoot / "plots"
 predictionDir = outputRoot / "predict"
-logFile = outputRoot / "logs.txt"
+logFile = outputRoot / "Logs.txt"
 outputRoot.mkdir(exist_ok=True)
 plotDir.mkdir(exist_ok=True)
 predictionDir.mkdir(exist_ok=True)
@@ -100,11 +105,86 @@ _log_handle = open(logFile, "w", encoding="utf-8", buffering=1)
 sys.stdout = TeeStream(_original_stdout, _log_handle)
 sys.stderr = TeeStream(_original_stderr, _log_handle)
 
-_saved_plot_counts = {}
+_savedPlotCounts = {}
+projectRootLabel = f"/{projectRoot.name}"
 
 def sanitize_name(text):
-    text = re.sub(r"[^A-Za-z0-9]+", "_", str(text).strip()).strip("_").lower()
-    return text or "artifact"
+    raw_text = str(text).strip()
+    cleaned_text = re.sub(r"[_-]+", " ", raw_text)
+    cleaned_text = re.sub(r"[^A-Za-z0-9()+]+", " ", cleaned_text)
+    cleaned_text = re.sub(r"\s+", " ", cleaned_text).strip()
+
+    if not cleaned_text:
+        return "Artifact"
+
+    if raw_text == raw_text.lower():
+        token_map = {
+            "1d": "1D",
+            "adaboost": "AdaBoost",
+            "eda": "EDA",
+            "ecg": "ECG",
+            "pr": "PR",
+            "auc": "AUC",
+            "roc": "ROC",
+            "rbf": "RBF",
+            "resnet": "ResNet",
+            "v1": "V1",
+            "v2": "V2",
+            "v3": "V3",
+            "v4": "V4",
+            "v5": "V5",
+            "v6": "V6",
+            "esn": "ESN",
+            "cnn": "CNN",
+            "bigru": "BiGRU",
+            "dae": "DAE",
+            "svm": "SVM",
+            "xgboost": "XGBoost",
+            "vicreg": "VICReg",
+        }
+        cleaned_text = " ".join(token_map.get(token.lower(), token.capitalize()) for token in cleaned_text.split())
+
+    return cleaned_text
+
+def make_filename(text, extension):
+    extension = str(extension).lstrip(".").strip()
+    stem = sanitize_name(text)
+    return f"{stem}.{extension}" if extension else stem
+
+def repoDisplayPath(path):
+    if path is None:
+        return ""
+
+    rawPath = Path(path).expanduser()
+    absolutePath = rawPath if rawPath.is_absolute() else (projectRoot / rawPath)
+    absolutePath = absolutePath.resolve()
+
+    try:
+        relativePath = absolutePath.relative_to(projectRoot)
+    except ValueError:
+        return absolutePath.as_posix()
+
+    relativePosix = relativePath.as_posix()
+    if relativePosix in ("", "."):
+        return projectRootLabel
+    return f"{projectRootLabel}/{relativePosix}"
+
+def repoResolvePath(path):
+    if path is None:
+        return None
+
+    text = str(path).strip()
+    if not text:
+        return Path()
+
+    if text == projectRootLabel:
+        return projectRoot
+
+    rootPrefix = f"{projectRootLabel}/"
+    if text.startswith(rootPrefix):
+        return (projectRoot / text[len(rootPrefix):]).resolve()
+
+    return Path(text).expanduser().resolve()
 
 def move_legends_outside(fig=None):
     fig = fig or plt.gcf()
@@ -130,12 +210,12 @@ def save_plot(plot_name):
     fig = plt.gcf()
     move_legends_outside(fig)
     safe_name = sanitize_name(plot_name)
-    current_count = _saved_plot_counts.get(safe_name, 0) + 1
-    _saved_plot_counts[safe_name] = current_count
-    suffix = "" if current_count == 1 else f"_{current_count:02d}"
+    currentCount = _savedPlotCounts.get(safe_name, 0) + 1
+    _savedPlotCounts[safe_name] = currentCount
+    suffix = "" if currentCount == 1 else f" ({currentCount})"
     file_path = plotDir / f"{safe_name}{suffix}.png"
     fig.savefig(file_path, dpi=300, bbox_inches="tight")
-    print("Saved plot:", file_path)
+    print("Saved plot:", repoDisplayPath(file_path))
     plt.show()
     plt.close(fig)
     return file_path
@@ -146,12 +226,12 @@ def set_global_seed(seed=42):
     tf.random.set_seed(seed)
 
 set_global_seed(randomState)
-print("Workspace root:", projectRoot)
-print("Dataset directory:", datasetDir)
-print("Output root:", outputRoot)
-print("Plot directory:", plotDir)
-print("Prediction directory:", predictionDir)
-print("Log file:", logFile)
+print("Workspace root:", repoDisplayPath(projectRoot))
+print("Dataset directory:", repoDisplayPath(datasetDir))
+print("Output root:", repoDisplayPath(outputRoot))
+print("Plot directory:", repoDisplayPath(plotDir))
+print("Prediction directory:", repoDisplayPath(predictionDir))
+print("Log file:", repoDisplayPath(logFile))
 
 datasetRoot = datasetDir
 metaPath = datasetRoot / "metadata.csv"
@@ -197,8 +277,8 @@ if datasetSpecIssues:
 else:
     print("Dataset specification cross-check passed.")
 
-print("Metadata path:", metaPath)
-print("Dataset root:", datasetRoot)
+print("Metadata path:", repoDisplayPath(metaPath))
+print("Dataset root:", repoDisplayPath(datasetRoot))
 print("Metadata shape:", metadata.shape)
 print("Metadata columns:", metadata.columns.tolist())
 print("Raw class counts:", classCounts)

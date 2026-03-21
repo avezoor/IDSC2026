@@ -247,4 +247,4 @@ This final section prints both the leaderboard winner and the safety-oriented cl
 
 ## 9.1 Print Final Decision and Log File
 
-Display the leaderboard winner, the safety-oriented clinical candidate, the main safety notes, and the location of all output files. Then print the content of `logs.txt`.
+Display the leaderboard winner, the safety-oriented clinical candidate, the main safety notes, and the location of all output files. Then print the content of `Logs.txt`.

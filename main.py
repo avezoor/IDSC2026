@@ -2,13 +2,13 @@ import shutil
 from pathlib import Path
 
 PIPELINE_FILES = [
-    "initialization.py",
-    "eda.py",
-    "preprocessing.py",
-    "test_split.py",
-    "train_models.py",
-    "validation.py",
-    "summary.py",
+    "pipeline/initialization.py",
+    "pipeline/eda.py",
+    "pipeline/preprocessing.py",
+    "pipeline/test_split.py",
+    "pipeline/train_models.py",
+    "pipeline/validation.py",
+    "pipeline/summary.py",
 ]
 
 BASE_DIR = Path(__file__).resolve().parent

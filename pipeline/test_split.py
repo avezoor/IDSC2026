@@ -53,7 +53,7 @@ splitDf = pd.concat(
     ],
     axis=0,
 ).reset_index(drop=True)
-splitFile = predictionDir / "shared_patient_split.csv"
+splitFile = predictionDir / make_filename("shared patient split", "csv")
 splitDf.to_csv(splitFile, index=False)
 
 trainIds = trainDf["patient_id"].tolist()
@@ -115,11 +115,11 @@ featureSetAuditDf = pd.DataFrame(
         },
     ]
 )
-featureAuditFile = predictionDir / "feature_set_audit.csv"
+featureAuditFile = predictionDir / make_filename("feature set audit", "csv")
 featureSetAuditDf.to_csv(featureAuditFile, index=False)
 
-print("Shared split file:", splitFile)
-print("Feature audit file:", featureAuditFile)
+print("Shared split file:", repoDisplayPath(splitFile))
+print("Feature audit file:", repoDisplayPath(featureAuditFile))
 print("Benchmark patient count:", len(benchmarkPatientDf))
 print("Train / Validation / Test:", len(trainIds), len(valIds), len(testIds))
 print("Train labels:", np.unique(yTrainTab, return_counts=True))

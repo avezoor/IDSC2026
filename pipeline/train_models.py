@@ -109,14 +109,14 @@ def evaluateBinaryPredictions(modelName, family, patientIds, yTrue, yProb, thres
             "pred_label": yPred,
         }
     )
-    predictionFile = predictionDir / f"{sanitize_name(modelName)}_predictions.csv"
+    predictionFile = predictionDir / make_filename(f"{modelName} Predictions", "csv")
     predictionDf.to_csv(predictionFile, index=False)
 
     metrics = {
         "Model": modelName,
         "Family": family,
         **baseMetrics,
-        "Prediction CSV": str(predictionFile),
+        "Prediction CSV": repoDisplayPath(predictionFile),
     }
     countDf = classCountReport(yTrue, yPred, modelName)
     return metrics, predictionDf, countDf
@@ -467,10 +467,10 @@ def trainDeepClassifier(modelName, modelBuilder, xTrain, yTrain, xVal, yVal, xTe
     modelMetrics["Epochs Trained"] = int(len(history.history.get("loss", [])))
     modelMetrics["Feature Set"] = "ECG-only primary benchmark"
 
-    modelArtifactPath = modelArtifactDir / f"{sanitize_name(modelName)}.keras"
+    modelArtifactPath = modelArtifactDir / make_filename(modelName, "keras")
     model.save(modelArtifactPath)
-    trainedSequenceModelArtifacts[modelName] = str(modelArtifactPath)
-    modelMetrics["Model Artifact"] = str(modelArtifactPath)
+    trainedSequenceModelArtifacts[modelName] = str(modelArtifactPath.resolve())
+    modelMetrics["Model Artifact"] = repoDisplayPath(modelArtifactPath)
 
     historyDict = historyToDict(history)
 
@@ -630,10 +630,10 @@ def trainTransferLearningModel(modelName, xTrain, yTrain, xVal, yVal, xTest, yTe
     modelMetrics["Epochs Trained"] = int(len(finetuneHistory.history.get("loss", [])))
     modelMetrics["Feature Set"] = "ECG-only primary benchmark"
 
-    modelArtifactPath = modelArtifactDir / f"{sanitize_name(modelName)}.keras"
+    modelArtifactPath = modelArtifactDir / make_filename(modelName, "keras")
     classifier.save(modelArtifactPath)
-    trainedSequenceModelArtifacts[modelName] = str(modelArtifactPath)
-    modelMetrics["Model Artifact"] = str(modelArtifactPath)
+    trainedSequenceModelArtifacts[modelName] = str(modelArtifactPath.resolve())
+    modelMetrics["Model Artifact"] = repoDisplayPath(modelArtifactPath)
 
     historyDict = {
         "pretrain": historyToDict(pretrainHistory),
@@ -814,10 +814,10 @@ def trainVicRegModel(modelName, xTrain, yTrain, xVal, yVal, xTest, yTest, testPa
     modelMetrics["Epochs Trained"] = int(len(finetuneHistory.history.get("loss", [])))
     modelMetrics["Feature Set"] = "ECG-only primary benchmark"
 
-    modelArtifactPath = modelArtifactDir / f"{sanitize_name(modelName)}.keras"
+    modelArtifactPath = modelArtifactDir / make_filename(modelName, "keras")
     classifier.save(modelArtifactPath)
-    trainedSequenceModelArtifacts[modelName] = str(modelArtifactPath)
-    modelMetrics["Model Artifact"] = str(modelArtifactPath)
+    trainedSequenceModelArtifacts[modelName] = str(modelArtifactPath.resolve())
+    modelMetrics["Model Artifact"] = repoDisplayPath(modelArtifactPath)
 
     historyDict = {
         "pretrain": pretrainHistory,

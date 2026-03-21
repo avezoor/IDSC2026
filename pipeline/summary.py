@@ -68,6 +68,63 @@ if "stabilitySummaryDf" in globals() and not stabilitySummaryDf.empty:
     )
     print()
 
+if "multiAspectRankingDf" in globals() and not multiAspectRankingDf.empty:
+    balancedRow = multiAspectRankingDf.iloc[0]
+    paretoLabel = "yes" if bool(balancedRow["Performance/Safety Pareto"]) else "no"
+    print("Balanced multi-aspect candidate:")
+    print(
+        f"{balancedRow['Model']} | composite={balancedRow['Balanced Composite Score']:.4f} | "
+        f"performance={balancedRow['Performance Score']:.4f} | safety={balancedRow['Safety Score']:.4f} | "
+        f"pareto={paretoLabel}"
+    )
+    print(
+        "This ranking blends aggregate discrimination, clinical safety, validation consistency, "
+        "training efficiency, and available repeated-split stability evidence."
+    )
+    print()
+
+bestModelsFile = outputRoot / "Best Models.txt"
+if "multiAspectRankingDf" in globals() and not multiAspectRankingDf.empty:
+    finalRecommendationRow = multiAspectRankingDf.iloc[0]
+    recommendationSource = "balanced multi-aspect ranking"
+else:
+    finalRecommendationRow = leaderboardRow
+    recommendationSource = "aggregate leaderboard"
+
+bestModelsLines = [
+    "Best Models",
+    "",
+    f"Final recommendation: {finalRecommendationRow['Model']}",
+    "",
+    "Why this model:",
+    f"- Selected from the {recommendationSource}.",
+    f"- PR-AUC: {float(finalRecommendationRow['PR AUC']):.4f}",
+    f"- F1: {float(finalRecommendationRow['F1']):.4f}",
+    f"- Sensitivity: {float(finalRecommendationRow['Sensitivity']):.4f}",
+    f"- Specificity: {float(finalRecommendationRow['Specificity']):.4f}",
+    f"- False Negatives: {int(finalRecommendationRow['False Negatives'])}",
+    f"- False Positives: {int(finalRecommendationRow['False Positives'])}",
+    "",
+    "Conclusion:",
+    f"If only one model should be used for Brugada classification, choose {finalRecommendationRow['Model']}.",
+]
+
+if clinicalRow["Model"] != finalRecommendationRow["Model"]:
+    bestModelsLines.extend(
+        [
+            "",
+            "Safety-oriented alternative:",
+            f"- {clinicalRow['Model']} offers the strongest screening-safety profile with sensitivity "
+            f"{float(clinicalRow['Sensitivity']):.4f} and {int(clinicalRow['False Negatives'])} false negatives.",
+        ]
+    )
+
+with open(bestModelsFile, "w", encoding="utf-8") as fh:
+    fh.write("\n".join(bestModelsLines) + "\n")
+
+print("Best Models.txt written to:", repoDisplayPath(bestModelsFile))
+print()
+
 print("Responsible deployment note:")
 print(
     "These results are research-only. Because the dataset is small, imbalanced, single-center, and evaluated in a multi-model selection setting, any deployment claim would require external validation, prospective threshold calibration, and a workflow that treats the model as decision support rather than autonomous diagnosis."
@@ -75,17 +132,22 @@ print(
 print()
 
 print("Saved outputs:")
-print("summary.csv:", summaryFile)
-print("clinical_summary.csv:", clinicalSummaryFile)
-print("shared_patient_split.csv:", splitFile)
-print("feature_set_audit.csv:", featureAuditFile)
+print(f"{summaryFile.name}:", repoDisplayPath(summaryFile))
+print(f"{clinicalSummaryFile.name}:", repoDisplayPath(clinicalSummaryFile))
+if "multiAspectRankingFile" in globals():
+    print(f"{multiAspectRankingFile.name}:", repoDisplayPath(multiAspectRankingFile))
+if "paretoFrontFile" in globals():
+    print(f"{paretoFrontFile.name}:", repoDisplayPath(paretoFrontFile))
+print(f"{bestModelsFile.name}:", repoDisplayPath(bestModelsFile))
+print(f"{splitFile.name}:", repoDisplayPath(splitFile))
+print(f"{featureAuditFile.name}:", repoDisplayPath(featureAuditFile))
 if "metadataAblationFile" in globals():
-    print("metadata_ablation_summary.csv:", metadataAblationFile)
+    print(f"{metadataAblationFile.name}:", repoDisplayPath(metadataAblationFile))
 if "stabilitySummaryFile" in globals():
-    print("stability_repeated_split_summary.csv:", stabilitySummaryFile)
-print("prediction folder:", predictionDir)
-print("plots folder:", plotDir)
-print("logs.txt:", logFile)
+    print(f"{stabilitySummaryFile.name}:", repoDisplayPath(stabilitySummaryFile))
+print("prediction folder:", repoDisplayPath(predictionDir))
+print("plots folder:", repoDisplayPath(plotDir))
+print(f"{logFile.name}:", repoDisplayPath(logFile))
 
 if benchmarkFailures:
     print()

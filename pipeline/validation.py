@@ -1,4 +1,4 @@
-assert benchmarkResults, "No model finished successfully, so the leaderboard cannot be built. Check logs.txt for the failure trace."
+assert benchmarkResults, "No model finished successfully, so the leaderboard cannot be built. Check Logs.txt for the failure trace."
 
 benchmarkResultsDf = pd.DataFrame(benchmarkResults)
 benchmarkResultsDf = benchmarkResultsDf.sort_values(
@@ -17,21 +17,21 @@ clinicalResultsDf.insert(0, "Clinical Rank", np.arange(1, len(clinicalResultsDf)
 benchmarkCountDf = pd.concat(benchmarkCountReports, axis=0).reset_index(drop=True)
 benchmarkFailuresDf = pd.DataFrame(benchmarkFailures)
 
-summaryFile = outputRoot / "summary.csv"
-clinicalSummaryFile = outputRoot / "clinical_summary.csv"
+summaryFile = outputRoot / make_filename("summary", "csv")
+clinicalSummaryFile = outputRoot / make_filename("clinical summary", "csv")
 benchmarkResultsDf.to_csv(summaryFile, index=False)
 clinicalResultsDf.to_csv(clinicalSummaryFile, index=False)
 
-countSummaryFile = predictionDir / "model_count_comparison.csv"
+countSummaryFile = predictionDir / make_filename("model count comparison", "csv")
 benchmarkCountDf.to_csv(countSummaryFile, index=False)
 
-failedModelsFile = predictionDir / "failed_models.csv"
+failedModelsFile = predictionDir / make_filename("failed models", "csv")
 benchmarkFailuresDf.to_csv(failedModelsFile, index=False)
 
-print("Saved leaderboard summary:", summaryFile)
-print("Saved safety-oriented clinical summary:", clinicalSummaryFile)
-print("Saved class count summary:", countSummaryFile)
-print("Saved failure summary:", failedModelsFile)
+print("Saved leaderboard summary:", repoDisplayPath(summaryFile))
+print("Saved safety-oriented clinical summary:", repoDisplayPath(clinicalSummaryFile))
+print("Saved class count summary:", repoDisplayPath(countSummaryFile))
+print("Saved failure summary:", repoDisplayPath(failedModelsFile))
 print("Leaderboard priority:", " -> ".join(leaderboardSortColumns))
 print("Clinical priority:", " -> ".join(clinicalSortColumns))
 print("Successful models:", len(benchmarkResultsDf))
@@ -202,7 +202,7 @@ if metadataShortcutColumns:
         by=["PR AUC", "F1", "Sensitivity"],
         ascending=[False, False, False],
     ).reset_index(drop=True)
-    metadataAblationFile = predictionDir / "metadata_ablation_summary.csv"
+    metadataAblationFile = predictionDir / make_filename("metadata ablation summary", "csv")
     metadataAblationResultsDf.to_csv(metadataAblationFile, index=False)
 
     ecgOnlyFeatureDf = benchmarkResultsDf[benchmarkResultsDf["Family"] == "Feature-Based"].copy()
@@ -220,12 +220,12 @@ if metadataShortcutColumns:
             metadataAblationComparisonDf[f"{metricName} ECG+metadata"]
             - metadataAblationComparisonDf[f"{metricName} ECG-only"]
         )
-    metadataAblationComparisonFile = predictionDir / "metadata_ablation_comparison.csv"
+    metadataAblationComparisonFile = predictionDir / make_filename("metadata ablation comparison", "csv")
     metadataAblationComparisonDf.to_csv(metadataAblationComparisonFile, index=False)
 
     print("Shortcut-risk metadata columns:", metadataShortcutColumns)
-    print("Saved metadata ablation summary:", metadataAblationFile)
-    print("Saved metadata ablation comparison:", metadataAblationComparisonFile)
+    print("Saved metadata ablation summary:", repoDisplayPath(metadataAblationFile))
+    print("Saved metadata ablation comparison:", repoDisplayPath(metadataAblationComparisonFile))
     display(metadataAblationResultsDf)
     display(metadataAblationComparisonDf)
 
@@ -347,8 +347,8 @@ for splitNumber, (trainPoolIdx, holdoutIdx) in enumerate(
         stabilityRecords.append(metricRow)
 
 stabilityDetailDf = pd.DataFrame(stabilityRecords)
-stabilityDetailFile = predictionDir / "stability_repeated_split_details.csv"
-stabilitySummaryFile = predictionDir / "stability_repeated_split_summary.csv"
+stabilityDetailFile = predictionDir / make_filename("stability repeated split details", "csv")
+stabilitySummaryFile = predictionDir / make_filename("stability repeated split summary", "csv")
 stabilityDetailDf.to_csv(stabilityDetailFile, index=False)
 
 stabilitySummaryDf = stabilityDetailDf.groupby("Model").agg(
@@ -369,8 +369,8 @@ stabilitySummaryDf = stabilitySummaryDf.reset_index().sort_values(
 )
 stabilitySummaryDf.to_csv(stabilitySummaryFile, index=False)
 
-print("Saved repeated split detail file:", stabilityDetailFile)
-print("Saved repeated split summary file:", stabilitySummaryFile)
+print("Saved repeated split detail file:", repoDisplayPath(stabilityDetailFile))
+print("Saved repeated split summary file:", repoDisplayPath(stabilitySummaryFile))
 display(stabilitySummaryDf)
 
 plt.figure(figsize=(10, 5))
@@ -380,6 +380,137 @@ plt.xlabel("")
 plt.ylabel("Sensitivity")
 plt.xticks(rotation=25, ha="right")
 save_plot("validation_repeated_split_sensitivity_boxplot")
+
+def minMaxScore(series, higherIsBetter=True, neutralValue=0.5):
+    values = pd.to_numeric(pd.Series(series), errors="coerce").astype(float)
+    validValues = values.dropna()
+
+    if validValues.empty or np.isclose(validValues.max(), validValues.min()):
+        return pd.Series(neutralValue, index=values.index, dtype=float)
+
+    score = (values - validValues.min()) / (validValues.max() - validValues.min())
+    if not higherIsBetter:
+        score = 1.0 - score
+    return score.fillna(neutralValue).clip(0.0, 1.0)
+
+def computeParetoFlags(df, maximizeColumns, minimizeColumns=None):
+    minimizeColumns = minimizeColumns or []
+    paretoFlags = []
+
+    for rowIdx, row in df.iterrows():
+        dominated = False
+        for otherIdx, otherRow in df.iterrows():
+            if rowIdx == otherIdx:
+                continue
+
+            betterOrEqual = all(otherRow[column] >= row[column] for column in maximizeColumns)
+            betterOrEqual = betterOrEqual and all(otherRow[column] <= row[column] for column in minimizeColumns)
+            strictlyBetter = any(otherRow[column] > row[column] for column in maximizeColumns)
+            strictlyBetter = strictlyBetter or any(otherRow[column] < row[column] for column in minimizeColumns)
+
+            if betterOrEqual and strictlyBetter:
+                dominated = True
+                break
+
+        paretoFlags.append(not dominated)
+
+    return paretoFlags
+
+multiAspectRankingDf = benchmarkResultsDf.copy()
+multiAspectRankingDf["Training Effort"] = (
+    multiAspectRankingDf["Epochs Trained"].fillna(1.0)
+    + multiAspectRankingDf["Pretrain Epochs"].fillna(0.0)
+).clip(lower=1.0)
+multiAspectRankingDf["Validation F1 Gap"] = (
+    multiAspectRankingDf["F1"] - multiAspectRankingDf["Validation F1"]
+).abs()
+multiAspectRankingDf["Consistency Score"] = (1.0 - multiAspectRankingDf["Validation F1 Gap"]).clip(0.0, 1.0)
+multiAspectRankingDf["Performance Score"] = (
+    0.45 * multiAspectRankingDf["PR AUC"]
+    + 0.30 * multiAspectRankingDf["F1"]
+    + 0.25 * multiAspectRankingDf["Balanced Accuracy"]
+)
+multiAspectRankingDf["Safety Score"] = (
+    0.50 * multiAspectRankingDf["Sensitivity"]
+    + 0.30 * multiAspectRankingDf["Specificity"]
+    + 0.20 * multiAspectRankingDf["Precision"]
+)
+multiAspectRankingDf["Efficiency Score"] = minMaxScore(np.log1p(multiAspectRankingDf["Training Effort"]), higherIsBetter=False)
+
+stabilityMergeDf = stabilitySummaryDf[
+    ["Model", "PR AUC mean", "F1 mean", "Sensitivity mean", "Sensitivity std", "False Negatives std"]
+].copy()
+multiAspectRankingDf = multiAspectRankingDf.merge(stabilityMergeDf, on="Model", how="left")
+multiAspectRankingDf["Stability Performance Score"] = (
+    0.40 * minMaxScore(multiAspectRankingDf["PR AUC mean"])
+    + 0.20 * minMaxScore(multiAspectRankingDf["F1 mean"])
+    + 0.40 * minMaxScore(multiAspectRankingDf["Sensitivity mean"])
+)
+multiAspectRankingDf["Stability Variance Score"] = (
+    0.60 * minMaxScore(multiAspectRankingDf["Sensitivity std"], higherIsBetter=False)
+    + 0.40 * minMaxScore(multiAspectRankingDf["False Negatives std"], higherIsBetter=False)
+)
+multiAspectRankingDf["Stability Score"] = (
+    0.5 * multiAspectRankingDf["Stability Performance Score"]
+    + 0.5 * multiAspectRankingDf["Stability Variance Score"]
+)
+multiAspectRankingDf["Stability Evidence"] = np.where(
+    multiAspectRankingDf["PR AUC mean"].notna(),
+    "Repeated split available",
+    "Not run; neutral fill",
+)
+multiAspectRankingDf["Balanced Composite Score"] = (
+    0.40 * multiAspectRankingDf["Performance Score"]
+    + 0.35 * multiAspectRankingDf["Safety Score"]
+    + 0.15 * multiAspectRankingDf["Consistency Score"]
+    + 0.05 * multiAspectRankingDf["Efficiency Score"]
+    + 0.05 * multiAspectRankingDf["Stability Score"]
+)
+multiAspectRankingDf["Performance/Safety Pareto"] = computeParetoFlags(
+    multiAspectRankingDf,
+    maximizeColumns=["PR AUC", "F1", "Sensitivity", "Specificity", "Balanced Accuracy"],
+    minimizeColumns=["False Negatives"],
+)
+multiAspectRankingDf = multiAspectRankingDf.sort_values(
+    by=[
+        "Balanced Composite Score",
+        "Performance/Safety Pareto",
+        "Safety Score",
+        "Performance Score",
+        "Consistency Score",
+        "Efficiency Score",
+    ],
+    ascending=[False, False, False, False, False, False],
+).reset_index(drop=True)
+multiAspectRankingDf.insert(0, "Balanced Rank", np.arange(1, len(multiAspectRankingDf) + 1))
+
+multiAspectRankingFile = outputRoot / make_filename("multi aspect ranking", "csv")
+paretoFrontFile = outputRoot / make_filename("pareto front models", "csv")
+multiAspectRankingDf.to_csv(multiAspectRankingFile, index=False)
+multiAspectRankingDf[multiAspectRankingDf["Performance/Safety Pareto"]].to_csv(paretoFrontFile, index=False)
+
+print(
+    "Balanced composite weights: "
+    "performance 0.40, safety 0.35, consistency 0.15, efficiency 0.05, stability 0.05."
+)
+print("Saved multi-aspect ranking:", repoDisplayPath(multiAspectRankingFile))
+print("Saved Pareto-front model list:", repoDisplayPath(paretoFrontFile))
+display(
+    multiAspectRankingDf[
+        [
+            "Balanced Rank",
+            "Model",
+            "Balanced Composite Score",
+            "Performance Score",
+            "Safety Score",
+            "Consistency Score",
+            "Efficiency Score",
+            "Stability Score",
+            "Performance/Safety Pareto",
+            "Stability Evidence",
+        ]
+    ]
+)
 
 featureInterpretationRows = benchmarkResultsDf[
     benchmarkResultsDf["Model"].isin(list(trainedClassicalModels.keys()))
@@ -410,19 +541,19 @@ if not featureInterpretationRows.empty:
         .str.extract(r"^(I|II|III|aVR|aVL|aVF|V1|V2|V3|V4|V5|V6)")[0]
         .fillna("cross-lead / global")
     )
-    featureImportanceFile = predictionDir / "feature_permutation_importance.csv"
+    featureImportanceFile = predictionDir / make_filename("feature permutation importance", "csv")
     featureImportanceDf.to_csv(featureImportanceFile, index=False)
 
     leadImportanceDf = featureImportanceDf.groupby("Lead Group", as_index=False)["Importance Mean"].sum().sort_values(
         "Importance Mean",
         ascending=False,
     )
-    leadImportanceFile = predictionDir / "feature_permutation_importance_by_lead.csv"
+    leadImportanceFile = predictionDir / make_filename("feature permutation importance by lead", "csv")
     leadImportanceDf.to_csv(leadImportanceFile, index=False)
 
     print("Feature interpretability model:", featureInterpretationModel)
-    print("Saved permutation importance:", featureImportanceFile)
-    print("Saved lead-group importance:", leadImportanceFile)
+    print("Saved permutation importance:", repoDisplayPath(featureImportanceFile))
+    print("Saved lead-group importance:", repoDisplayPath(leadImportanceFile))
     display(featureImportanceDf.head(15))
     display(leadImportanceDf)
 
@@ -445,10 +576,11 @@ else:
 
 def loadSavedSequenceModel(modelName):
     artifactPath = trainedSequenceModelArtifacts.get(modelName)
-    if not artifactPath or not Path(artifactPath).exists():
+    resolvedArtifactPath = repoResolvePath(artifactPath) if artifactPath else None
+    if resolvedArtifactPath is None or not resolvedArtifactPath.exists():
         return None
     return tf.keras.models.load_model(
-        artifactPath,
+        resolvedArtifactPath,
         custom_objects={"LearnablePositionEmbedding": LearnablePositionEmbedding},
         compile=False,
     )
@@ -481,12 +613,12 @@ if not sequenceInterpretationRows.empty:
                 "Saliency",
                 ascending=False,
             )
-            sequenceLeadSaliencyFile = predictionDir / "sequence_lead_saliency.csv"
+            sequenceLeadSaliencyFile = predictionDir / make_filename("sequence lead saliency", "csv")
             sequenceLeadSaliencyDf.to_csv(sequenceLeadSaliencyFile, index=False)
 
             print("Sequence saliency model:", sequenceInterpretationModel)
             print("Saliency patients:", selectedPatientIds)
-            print("Saved sequence lead saliency:", sequenceLeadSaliencyFile)
+            print("Saved sequence lead saliency:", repoDisplayPath(sequenceLeadSaliencyFile))
             display(sequenceLeadSaliencyDf)
 
             plt.figure(figsize=(8, 4))
@@ -524,7 +656,7 @@ clinicalModelName = clinicalRow["Model"]
 clinicalPredictionDf = benchmarkPredictionTables[clinicalModelName].copy()
 
 thresholdScanDf = evaluateThresholdGrid(clinicalPredictionDf["target"], clinicalPredictionDf["pred_proba"])
-thresholdScanFile = predictionDir / "clinical_candidate_threshold_scan.csv"
+thresholdScanFile = predictionDir / make_filename("clinical candidate threshold scan", "csv")
 thresholdScanDf.to_csv(thresholdScanFile, index=False)
 
 plt.figure(figsize=(10, 5))
@@ -554,16 +686,16 @@ clinicalFailureDf["Outcome Type"] = np.select(
     ["True Positive", "False Negative", "False Positive", "True Negative"],
     default="Other",
 )
-clinicalFailureFile = predictionDir / "clinical_candidate_failure_overview.csv"
+clinicalFailureFile = predictionDir / make_filename("clinical candidate failure overview", "csv")
 clinicalFailureDf.to_csv(clinicalFailureFile, index=False)
 
 falseNegativeDf = clinicalFailureDf[clinicalFailureDf["Outcome Type"] == "False Negative"].sort_values("pred_proba")
-falseNegativeFile = predictionDir / "clinical_candidate_false_negatives.csv"
+falseNegativeFile = predictionDir / make_filename("clinical candidate false negatives", "csv")
 falseNegativeDf.to_csv(falseNegativeFile, index=False)
 
-print("Saved threshold scan:", thresholdScanFile)
-print("Saved failure overview:", clinicalFailureFile)
-print("Saved false negative table:", falseNegativeFile)
+print("Saved threshold scan:", repoDisplayPath(thresholdScanFile))
+print("Saved failure overview:", repoDisplayPath(clinicalFailureFile))
+print("Saved false negative table:", repoDisplayPath(falseNegativeFile))
 display(falseNegativeDf)
 
 if "basal_pattern" in clinicalFailureDf.columns and not clinicalFailureDf[clinicalFailureDf["target"] == 1].empty:
