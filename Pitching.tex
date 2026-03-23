@@ -1,4 +1,4 @@
-\documentclass[10pt,aspectratio=169]{beamer}
+\documentclass[11pt,aspectratio=169]{beamer}
 
 \usetheme{Madrid}
 \usecolortheme{default}
@@ -28,6 +28,9 @@
 \setbeamercolor{block body alerted}{fg=black,bg=softbg}
 \setbeamercolor{block title example}{fg=white,bg=hopeteal}
 \setbeamercolor{block body example}{fg=black,bg=softbg}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamerfont{normal text}{size=\normalsize}
 
 \newcommand{\statcard}[2]{%
   \begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.8em]{block body}
@@ -36,7 +39,7 @@
   \end{beamercolorbox}
 }
 
-\title{IDSC 2026 PITCH DECK}
+\title{IDSC 2026 Pitch Deck}
 \subtitle{Team VZ}
 \author{Izzar Suly Nashrudin and Risma Muslimah}
 \date{}
@@ -47,197 +50,165 @@
 % Suggested speaking time: 0:00--0:20
 \begin{frame}[plain]
   \centering
-  {\Huge\bfseries IDSC 2026 PITCH DECK\par}
+  {\Huge\bfseries IDSC 2026 Pitch Deck\par}
   \vspace{0.6em}
-  {\Large\bfseries Team VZ\par}
+  {\Large\bfseries Helping clinicians miss fewer Brugada cases\par}
   \vspace{0.5em}
-  {\large Izzar Suly Nashrudin and Risma Muslimah\par}
+  {\large Team VZ: Izzar Suly Nashrudin and Risma Muslimah\par}
   \vspace{1em}
   \includegraphics[width=0.26\linewidth]{EDA Brugada 188981 Selected Leads.png}
   \vspace{0.8em}
   \par
-  \scriptsize
-  We do not just optimize accuracy. We optimize for fewer missed high-risk patients.
+  \normalsize
+  A safety-aware ECG benchmark for earlier review of high-risk patients.
 \end{frame}
 
 % Suggested speaking time: 0:20--0:50
-\begin{frame}[t]{The Healthcare Problem}
+\begin{frame}[t]{One missed Brugada ECG can be fatal}
 \begin{columns}[T,onlytextwidth]
 \column{0.58\textwidth}
 \justifying
-\begin{block}{Why this matters}
+\begin{block}{Why judges should care}
 \begin{itemize}
-  \item Brugada syndrome can lead to sudden cardiac death, but its ECG pattern can be subtle.
-  \item In screening, a false negative is more dangerous than an extra false alarm.
-  \item Many AI studies chase accuracy, even when the real clinical question is: \textbf{who are we still missing?}
+  \item Brugada syndrome can lead to sudden cardiac death.
+  \item In screening, missing a true case matters more than one extra review.
+  \item So the key question is: ``Who are we still missing?''
 \end{itemize}
 \end{block}
 
-\begin{alertblock}{Our pitch}
-Use ordinary 12-lead ECGs to build a clinically honest screening aid that helps specialists miss fewer dangerous cases.
+\begin{alertblock}{Our story}
+We use ordinary 12-lead ECGs to build a screening aid designed to miss fewer dangerous patients.
 \end{alertblock}
 
 \column{0.38\textwidth}
-\statcard{356}{binary ECG patients after excluding atypical label-2 cases}
-\vspace{0.5em}
-\statcard{69}{Brugada cases in the full benchmark cohort}
-\vspace{0.5em}
-\statcard{11}{ECG-only models compared on one shared patient split}
+\statcard{356}{patients in the main ECG cohort}
+\vspace{0.3em}
+\statcard{69}{Brugada cases in the full benchmark}
+\vspace{0.3em}
+\statcard{11}{models on the same ECG-only split}
 \end{columns}
 \end{frame}
 
 % Suggested speaking time: 0:50--1:25
-\begin{frame}[t]{Our Mathematical and Computational Solution}
-\small
+\begin{frame}[t]{We benchmarked for safety, not just score}
 \begin{columns}[T,onlytextwidth]
 \column{0.55\textwidth}
-\begin{block}{Pipeline}
-\begin{enumerate}
-  \item Start from raw WFDB 12-lead ECGs.
-  \item Build median-beat and engineered-feature representations.
-  \item Train 11 complementary models on the same patient-level split.
-  \item Tune thresholds on validation data, then test once.
-\end{enumerate}
-\end{block}
-
-\begin{exampleblock}{Clinical design choice}
-The primary benchmark is \textbf{ECG-only}. Metadata stays in a separate ablation to avoid shortcut learning.
-\end{exampleblock}
-
-\column{0.42\textwidth}
-\begin{block}{Safety-aware ranking}
-\[
-\begin{aligned}
-\text{Composite} ={}& 0.40P + 0.35S + 0.15C \\
-&+ 0.05E + 0.05T
-\end{aligned}
-\]
+\begin{block}{What we did}
 \begin{itemize}
-  \item $P$: performance
-  \item $S$: safety
-  \item $C$: consistency
-  \item $E$: efficiency
-  \item $T$: stability evidence
+  \item Read raw 12-lead ECGs.
+  \item Compare 11 models on one shared patient split.
+  \item Keep the main benchmark ECG-only.
 \end{itemize}
 \end{block}
 
-\begin{alertblock}{Key idea}
-We do not let raw leaderboard score hide a poor false-negative profile.
+\begin{exampleblock}{Clinical design choice}
+Metadata stays in a separate ablation, so the main result is driven by the ECG itself.
+\end{exampleblock}
+
+\column{0.42\textwidth}
+\begin{block}{How we judged models}
+\begin{itemize}
+  \item Strong overall performance still matters.
+  \item But missing risky patients matters more.
+  \item Consistency and practicality break ties.
+\end{itemize}
+\end{block}
+
+\begin{alertblock}{Key message}
+We do not let a high score hide dangerous false negatives.
 \end{alertblock}
 \end{columns}
 \end{frame}
 
 % Suggested speaking time: 1:25--1:50
-\begin{frame}[t]{Why 11 Models Matter for Healthcare Hope}
-\scriptsize
+\begin{frame}[t]{We did not bet on one lucky algorithm}
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
-\begin{block}{Feature-based models}
+\begin{block}{Three model families}
 \begin{itemize}
-  \item \textbf{XGBoost}: strong nonlinear baseline on engineered ECG biomarkers.
-  \item \textbf{Random Forest}: robust ensemble for noisy and variable patient signals.
-  \item \textbf{SVM-RBF}: captures subtle curved decision boundaries in borderline ECGs.
-  \item \textbf{AdaBoost}: focuses learning on the hardest-to-classify cases.
+  \item \textbf{Feature models}: XGBoost, Random Forest, SVM-RBF, and AdaBoost.
+  \item \textbf{Deep sequence models}: CNN, ResNet-1D, CNN+BiGRU, and Transformer Encoder.
+  \item \textbf{Representation learning}: transfer learning, VICReg, and Echo State Network.
 \end{itemize}
 \end{block}
 
-\begin{exampleblock}{End-to-end deep models}
-\begin{itemize}
-  \item \textbf{1D CNN Median Beat}: learns local waveform cues directly from ECG morphology.
-  \item \textbf{ResNet-1D Median Beat}: goes deeper without unstable training, improving safety-oriented detection.
-  \item \textbf{CNN + BiGRU Median Beat}: combines local patterns with sequential beat context.
-  \item \textbf{Transformer Encoder Median Beat}: models wider lead-to-lead and time interactions.
-\end{itemize}
-\end{exampleblock}
-
 \column{0.48\textwidth}
-\begin{alertblock}{Transfer and advanced models}
+\begin{alertblock}{Why this matters}
 \begin{itemize}
-  \item \textbf{Transfer Learning (In-domain DAE to Classifier)}: reuses ECG structure learned before classification, helping when labeled data is limited.
-  \item \textbf{VICReg (Self-supervised)}: learns useful signal representations without needing labels on every step.
-  \item \textbf{Echo State Network (ESN)}: provides a lightweight dynamic sequence baseline for efficient screening.
+  \item Each family reads the ECG differently.
+  \item All 11 models use the same split, so the comparison is fair.
+  \item If one model still wins, the recommendation is easier to trust.
 \end{itemize}
 \end{alertblock}
 
 \begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.8em]{block body}
-\textbf{Why this brings hope:} we did not trust one lucky algorithm. We tested 11 mathematical views of the same ECG so clinicians get a more credible, safety-aware, and practical screening aid.
+\textbf{Takeaway:} we tested breadth, then chose the model that balances performance with screening safety.
 \end{beamercolorbox}
 \end{columns}
 \end{frame}
 
 % Suggested speaking time: 1:50--2:20
-\begin{frame}[t]{What the Benchmark Found}
+\begin{frame}[t]{One model won on safety and performance}
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
-\begin{exampleblock}{Best single recommendation}
-\small
-\textbf{Transfer Learning (In-domain DAE to Classifier)}
+\begin{exampleblock}{Recommended model}
+\textbf{Transfer learning model}
 \begin{itemize}
-  \item PR-AUC: 0.676, F1: 0.692
-  \item Sensitivity: 0.643, Specificity: 0.948
-  \item False Negatives: 5
-  \item Selected by the balanced multi-aspect ranking
+  \item \textbf{Headline metric:} PR-AUC 0.676
+  \item \textbf{Clinical takeaway:} only 5 false negatives
 \end{itemize}
 \end{exampleblock}
 
-\begin{alertblock}{Best screening-safety story}
-\small
-\textbf{Transfer Learning (In-domain DAE to Classifier)}
-\begin{itemize}
-  \item Sensitivity: 0.643, Specificity: 0.948
-  \item False Negatives: 5, False Positives: 3
-  \item The same model also ranks first on the clinical ranking
-\end{itemize}
+\begin{alertblock}{The story in one sentence}
+The best leaderboard model and safest screening model can differ. Here, they converge on the same transfer model.
 \end{alertblock}
 
 \column{0.48\textwidth}
-\begin{block}{Why this is important}
+\begin{block}{Why this result matters}
 \justifying
-The strongest leaderboard model and the safest clinical screening model \textbf{can differ}, which is why our framework reports both. In these results, they converge on the same transfer-learning model.
+This is what we want in healthcare: a model that performs strongly overall while still reducing the number of missed risky patients.
 \end{block}
 
 \vspace{0.3em}
-\includegraphics[width=\linewidth,height=0.46\textheight,keepaspectratio]{Validation Clinical Candidate Confusion Matrix.png}
+\includegraphics[width=\linewidth,height=0.36\textheight,keepaspectratio]{Validation Clinical Candidate Confusion Matrix.png}
 \end{columns}
 \end{frame}
 
 % Suggested speaking time: 2:20--2:45
-\begin{frame}[t]{Why This Brings Hope to Healthcare}
-\small
+\begin{frame}[t]{It fits the way clinicians already work}
 \begin{columns}[T,onlytextwidth]
 \column{0.54\textwidth}
-\begin{block}{Hope comes from practicality}
+\begin{block}{Why it is practical}
 \begin{itemize}
-  \item It uses standard 12-lead ECGs already available in real care settings.
-  \item It supports earlier screening attention, where one extra review can matter.
-  \item It still highlights clinically plausible precordial regions, while also using broader cross-lead cues instead of acting like a pure black box.
+  \item It uses standard 12-lead ECGs already available in care settings.
+  \item It works as a second reader for earlier specialist attention.
+  \item It still highlights plausible precordial regions.
 \end{itemize}
 \end{block}
 
-\begin{exampleblock}{Hope comes from honesty}
+\begin{exampleblock}{Why it is clinically honest}
 \begin{itemize}
   \item We explicitly surface false negatives.
-  \item We separate aggregate performance from safety-oriented decisions.
-  \item We frame the model as a second reader, not autonomous diagnosis.
+  \item We separate aggregate performance from safety decisions.
+  \item We frame it as a second reader, not autonomous diagnosis.
 \end{itemize}
 \end{exampleblock}
 
 \column{0.42\textwidth}
-\includegraphics[width=\linewidth,height=0.39\textheight,keepaspectratio]{Interpretability Sequence V1 V3 Saliency Heatmap.png}
+\includegraphics[width=\linewidth,height=0.25\textheight,keepaspectratio]{Interpretability Sequence V1 V3 Saliency Heatmap.png}
 
 \vspace{0.3em}
-\begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.8em]{block body}
+\begin{beamercolorbox}[wd=\linewidth,rounded=true,sep=0.3em]{block body}
 \centering
-\textbf{Hope is not replacing clinicians.}\\[0.2em]
-It is helping them miss fewer dangerous ECGs.
+\textbf{Simple value:} help clinicians notice risky ECGs earlier.
 \end{beamercolorbox}
 \end{columns}
 \end{frame}
 
 % Suggested speaking time: 2:45--3:00
-\begin{frame}[t]{Closing}
+\begin{frame}[t]{From ordinary ECGs to earlier action}
 \begin{block}{What we achieved}
-We built a safety-aware ECG benchmarking pipeline that turns raw 12-lead signals into a practical and clinically grounded Brugada screening aid.
+We built a safety-aware ECG benchmarking pipeline that turns raw 12-lead signals into a practical Brugada screening aid.
 \end{block}
 
 \begin{columns}[T,onlytextwidth]
@@ -262,8 +233,8 @@ We built a safety-aware ECG benchmarking pipeline that turns raw 12-lead signals
 
 \vspace{0.6em}
 \centering
-\Large\textbf{From ordinary ECGs to earlier action.}\\[0.2em]
-\large That is the kind of hope AI should bring to healthcare.\\[0.6em]
+\Large\textbf{Miss fewer risky patients. Review them earlier.}\\[0.2em]
+\large That is the kind of impact AI should bring to healthcare.\\[0.6em]
 \scriptsize Project repository: \url{https://github.com/avezoor/IDSC2026}
 \end{frame}
 
