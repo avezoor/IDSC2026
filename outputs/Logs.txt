@@ -1,0 +1,1262 @@
+Workspace root: /IDSC2026
+Dataset directory: /IDSC2026/datasets
+Output root: /IDSC2026/outputs
+Plot directory: /IDSC2026/outputs/plots
+Prediction directory: /IDSC2026/outputs/predict
+Log file: /IDSC2026/outputs/Logs.txt
+Total subjects: observed=363, expected=363 [OK]
+Brugada-positive subjects (raw label > 0): observed=76, expected=76 [OK]
+Normal subjects: observed=287, expected=287 [OK]
+Dataset specification cross-check passed.
+Metadata path: /IDSC2026/datasets/metadata.csv
+Dataset root: /IDSC2026/datasets
+Metadata shape: (363, 4)
+Metadata columns: ['patient_id', 'basal_pattern', 'sudden_death', 'brugada']
+Raw class counts: {0: 287, 1: 69, 2: 7}
+   patient_id  basal_pattern  sudden_death  brugada
+0      188981              1             0        1
+1      251972              0             0        0
+2      265715              0             0        0
+3      267628              0             0        0
+4      267630              0             0        1
+
+================================================================================
+Running pipeline/eda.py
+================================================================================
+brugada
+0    287
+1     69
+2      7
+Name: count, dtype: int64
+
+brugada
+0    0.790634
+1    0.190083
+2    0.019284
+Name: proportion, dtype: float64
+
+Minority class (Brugada) count : 69
+Majority class (Normal) count  : 287
+Positive rate                  : 0.1901
+Imbalance ratio (Normal/Brugada): 4.16
+Imbalance handling plan: stratified patient split, class weighting or scale_pos_weight, threshold tuning on validation data, and model ranking that emphasizes PR-AUC, F1, sensitivity, and Brugada detection instead of raw accuracy alone.
+Saved plot: /IDSC2026/outputs/plots/EDA Label Distribution.png
+Saved plot: /IDSC2026/outputs/plots/EDA Basal Pattern Distribution.png
+Saved plot: /IDSC2026/outputs/plots/EDA Sudden Death Distribution.png
+Total .hea files found: 363
+Indexed records: 363
+Missing patient IDs in file index: 0
+Checking WFDB headers:   0%|          | 0/363 [00:00<?, ?it/s]Checking WFDB headers:   2%|2         | 8/363 [00:00<00:04, 74.78it/s]Checking WFDB headers:   4%|4         | 16/363 [00:00<00:04, 75.24it/s]Checking WFDB headers:   7%|6         | 24/363 [00:00<00:04, 76.65it/s]Checking WFDB headers:   9%|8         | 32/363 [00:00<00:04, 75.15it/s]Checking WFDB headers:  11%|#1        | 40/363 [00:00<00:04, 75.20it/s]Checking WFDB headers:  13%|#3        | 48/363 [00:00<00:04, 74.64it/s]Checking WFDB headers:  15%|#5        | 56/363 [00:00<00:04, 75.32it/s]Checking WFDB headers:  18%|#7        | 64/363 [00:00<00:03, 75.34it/s]Checking WFDB headers:  20%|#9        | 72/363 [00:00<00:03, 75.01it/s]Checking WFDB headers:  22%|##2       | 80/363 [00:01<00:03, 73.53it/s]Checking WFDB headers:  24%|##4       | 88/363 [00:01<00:03, 74.39it/s]Checking WFDB headers:  26%|##6       | 96/363 [00:01<00:03, 72.94it/s]Checking WFDB headers:  29%|##8       | 104/363 [00:01<00:03, 74.45it/s]Checking WFDB headers:  31%|###       | 112/363 [00:01<00:03, 71.16it/s]Checking WFDB headers:  33%|###3      | 120/363 [00:01<00:03, 66.59it/s]Checking WFDB headers:  35%|###4      | 127/363 [00:01<00:03, 67.24it/s]Checking WFDB headers:  37%|###6      | 134/363 [00:01<00:03, 62.89it/s]Checking WFDB headers:  39%|###8      | 141/363 [00:02<00:03, 60.51it/s]Checking WFDB headers:  41%|####1     | 149/363 [00:02<00:03, 64.33it/s]Checking WFDB headers:  43%|####3     | 157/363 [00:02<00:03, 67.67it/s]Checking WFDB headers:  45%|####5     | 165/363 [00:02<00:02, 70.67it/s]Checking WFDB headers:  48%|####7     | 173/363 [00:02<00:02, 72.50it/s]Checking WFDB headers:  50%|####9     | 181/363 [00:02<00:02, 74.33it/s]Checking WFDB headers:  52%|#####2    | 189/363 [00:02<00:02, 74.78it/s]Checking WFDB headers:  54%|#####4    | 197/363 [00:02<00:02, 75.21it/s]Checking WFDB headers:  56%|#####6    | 205/363 [00:02<00:02, 74.62it/s]Checking WFDB headers:  59%|#####8    | 213/363 [00:02<00:01, 75.70it/s]Checking WFDB headers:  61%|######    | 221/363 [00:03<00:01, 75.40it/s]Checking WFDB headers:  63%|######3   | 229/363 [00:03<00:01, 75.93it/s]Checking WFDB headers:  65%|######5   | 237/363 [00:03<00:01, 75.39it/s]Checking WFDB headers:  67%|######7   | 245/363 [00:03<00:01, 74.17it/s]Checking WFDB headers:  70%|######9   | 253/363 [00:03<00:01, 73.84it/s]Checking WFDB headers:  72%|#######1  | 261/363 [00:03<00:01, 75.34it/s]Checking WFDB headers:  74%|#######4  | 269/363 [00:03<00:01, 73.79it/s]Checking WFDB headers:  76%|#######6  | 277/363 [00:03<00:01, 74.31it/s]Checking WFDB headers:  79%|#######8  | 285/363 [00:03<00:01, 74.88it/s]Checking WFDB headers:  81%|########  | 293/363 [00:04<00:00, 76.09it/s]Checking WFDB headers:  83%|########2 | 301/363 [00:04<00:00, 76.49it/s]Checking WFDB headers:  85%|########5 | 309/363 [00:04<00:00, 76.54it/s]Checking WFDB headers:  87%|########7 | 317/363 [00:04<00:00, 74.20it/s]Checking WFDB headers:  90%|########9 | 325/363 [00:04<00:00, 73.17it/s]Checking WFDB headers:  92%|#########1| 333/363 [00:04<00:00, 74.14it/s]Checking WFDB headers:  94%|#########3| 341/363 [00:04<00:00, 65.21it/s]Checking WFDB headers:  96%|#########5| 348/363 [00:04<00:00, 64.60it/s]Checking WFDB headers:  98%|#########8| 356/363 [00:04<00:00, 68.49it/s]Checking WFDB headers: 100%|##########| 363/363 [00:05<00:00, 72.30it/s]
+Sampling rate check: OK (all records should be 100 Hz)
+Signal length check: OK (all records should be 1200 samples (12 seconds))
+Lead count check: OK (all records should contain 12 leads)
+All records passed the recording specification cross-check.
+Expected sampling rate: 100 Hz
+Expected signal length: 1200 samples
+  patient_id     fs  sig_len  n_sig
+0    1009874  100.0     1200     12
+1    1013884  100.0     1200     12
+2    1023925  100.0     1200     12
+3    1036640  100.0     1200     12
+4    1041375  100.0     1200     12
+Saved plot: /IDSC2026/outputs/plots/EDA Normal 251972 Selected Leads.png
+Saved plot: /IDSC2026/outputs/plots/EDA Brugada 188981 Selected Leads.png
+
+================================================================================
+Running pipeline/preprocessing.py
+================================================================================
+  0%|          | 0/363 [00:00<?, ?it/s]  1%|          | 2/363 [00:00<00:27, 13.14it/s]  1%|1         | 4/363 [00:00<00:26, 13.45it/s]  2%|1         | 6/363 [00:00<00:26, 13.68it/s]  2%|2         | 8/363 [00:00<00:28, 12.57it/s]  3%|2         | 10/363 [00:00<00:27, 12.93it/s]  3%|3         | 12/363 [00:00<00:27, 12.99it/s]  4%|3         | 14/363 [00:01<00:29, 11.87it/s]  4%|4         | 16/363 [00:01<00:29, 11.78it/s]  5%|4         | 18/363 [00:01<00:28, 12.26it/s]  6%|5         | 20/363 [00:01<00:27, 12.61it/s]  6%|6         | 22/363 [00:01<00:25, 13.14it/s]  7%|6         | 24/363 [00:01<00:26, 13.03it/s]  7%|7         | 26/363 [00:02<00:26, 12.95it/s]  8%|7         | 28/363 [00:02<00:26, 12.46it/s]  8%|8         | 30/363 [00:02<00:27, 12.00it/s]  9%|8         | 32/363 [00:02<00:26, 12.30it/s]  9%|9         | 34/363 [00:02<00:27, 12.07it/s] 10%|9         | 36/363 [00:02<00:27, 11.89it/s] 10%|#         | 38/363 [00:03<00:26, 12.30it/s] 11%|#1        | 40/363 [00:03<00:26, 12.01it/s] 12%|#1        | 42/363 [00:03<00:26, 12.31it/s] 12%|#2        | 44/363 [00:03<00:25, 12.49it/s] 13%|#2        | 46/363 [00:03<00:25, 12.67it/s] 13%|#3        | 48/363 [00:03<00:24, 12.81it/s] 14%|#3        | 50/363 [00:03<00:24, 12.67it/s] 14%|#4        | 52/363 [00:04<00:25, 12.24it/s] 15%|#4        | 54/363 [00:04<00:25, 12.17it/s] 15%|#5        | 56/363 [00:04<00:25, 11.86it/s] 16%|#5        | 58/363 [00:04<00:27, 11.12it/s] 17%|#6        | 60/363 [00:04<00:26, 11.34it/s] 17%|#7        | 62/363 [00:05<00:25, 11.95it/s] 18%|#7        | 64/363 [00:05<00:25, 11.64it/s] 18%|#8        | 66/363 [00:05<00:24, 12.10it/s] 19%|#8        | 68/363 [00:05<00:24, 12.13it/s] 19%|#9        | 70/363 [00:05<00:24, 11.86it/s] 20%|#9        | 72/363 [00:05<00:24, 12.07it/s] 20%|##        | 74/363 [00:06<00:23, 12.25it/s] 21%|##        | 76/363 [00:06<00:23, 12.34it/s] 21%|##1       | 78/363 [00:06<00:23, 12.02it/s] 22%|##2       | 80/363 [00:06<00:23, 11.80it/s] 23%|##2       | 82/363 [00:06<00:24, 11.54it/s] 23%|##3       | 84/363 [00:06<00:23, 11.92it/s] 24%|##3       | 86/363 [00:07<00:22, 12.16it/s] 24%|##4       | 88/363 [00:07<00:22, 12.02it/s] 25%|##4       | 90/363 [00:07<00:29,  9.32it/s] 25%|##5       | 92/363 [00:07<00:27,  9.98it/s] 26%|##5       | 94/363 [00:07<00:25, 10.37it/s] 26%|##6       | 96/363 [00:08<00:24, 10.81it/s] 27%|##6       | 98/363 [00:08<00:23, 11.11it/s] 28%|##7       | 100/363 [00:08<00:22, 11.68it/s] 28%|##8       | 102/363 [00:08<00:21, 11.97it/s] 29%|##8       | 104/363 [00:08<00:21, 11.87it/s] 29%|##9       | 106/363 [00:08<00:22, 11.60it/s] 30%|##9       | 108/363 [00:09<00:21, 11.90it/s] 30%|###       | 110/363 [00:09<00:21, 12.03it/s] 31%|###       | 112/363 [00:09<00:20, 12.24it/s] 31%|###1      | 114/363 [00:09<00:20, 12.34it/s] 32%|###1      | 116/363 [00:09<00:20, 12.35it/s] 33%|###2      | 118/363 [00:09<00:19, 12.46it/s] 33%|###3      | 120/363 [00:09<00:19, 12.48it/s] 34%|###3      | 122/363 [00:10<00:20, 12.04it/s] 34%|###4      | 124/363 [00:10<00:22, 10.59it/s] 35%|###4      | 126/363 [00:10<00:23, 10.07it/s] 35%|###5      | 128/363 [00:10<00:21, 10.76it/s] 36%|###5      | 130/363 [00:10<00:21, 10.72it/s] 36%|###6      | 132/363 [00:11<00:20, 11.36it/s] 37%|###6      | 134/363 [00:11<00:19, 11.60it/s] 37%|###7      | 136/363 [00:11<00:19, 11.80it/s] 38%|###8      | 138/363 [00:11<00:18, 12.14it/s] 39%|###8      | 140/363 [00:11<00:17, 12.48it/s] 39%|###9      | 142/363 [00:11<00:17, 12.52it/s] 40%|###9      | 144/363 [00:12<00:17, 12.51it/s] 40%|####      | 146/363 [00:12<00:17, 12.49it/s] 41%|####      | 148/363 [00:12<00:16, 12.76it/s] 41%|####1     | 150/363 [00:12<00:16, 12.83it/s] 42%|####1     | 152/363 [00:12<00:16, 12.71it/s] 42%|####2     | 154/363 [00:12<00:17, 11.67it/s] 43%|####2     | 156/363 [00:13<00:17, 11.55it/s] 44%|####3     | 158/363 [00:13<00:18, 10.91it/s] 44%|####4     | 160/363 [00:13<00:17, 11.42it/s] 45%|####4     | 162/363 [00:13<00:17, 11.75it/s] 45%|####5     | 164/363 [00:13<00:16, 12.10it/s] 46%|####5     | 166/363 [00:13<00:16, 12.29it/s] 46%|####6     | 168/363 [00:14<00:15, 12.57it/s] 47%|####6     | 170/363 [00:14<00:15, 12.54it/s] 47%|####7     | 172/363 [00:14<00:15, 12.61it/s] 48%|####7     | 174/363 [00:14<00:15, 12.52it/s] 48%|####8     | 176/363 [00:14<00:14, 12.59it/s] 49%|####9     | 178/363 [00:14<00:15, 11.93it/s] 50%|####9     | 180/363 [00:15<00:15, 11.84it/s] 50%|#####     | 182/363 [00:15<00:15, 11.81it/s] 51%|#####     | 184/363 [00:15<00:14, 11.97it/s] 51%|#####1    | 186/363 [00:15<00:15, 11.68it/s] 52%|#####1    | 188/363 [00:15<00:14, 12.05it/s] 52%|#####2    | 190/363 [00:15<00:13, 12.36it/s] 53%|#####2    | 192/363 [00:16<00:15, 11.33it/s] 53%|#####3    | 194/363 [00:16<00:15, 10.92it/s] 54%|#####3    | 196/363 [00:16<00:15, 10.93it/s] 55%|#####4    | 198/363 [00:16<00:16,  9.73it/s] 55%|#####5    | 200/363 [00:16<00:16,  9.77it/s] 56%|#####5    | 202/363 [00:17<00:15, 10.10it/s] 56%|#####6    | 204/363 [00:17<00:16,  9.82it/s] 56%|#####6    | 205/363 [00:17<00:16,  9.54it/s] 57%|#####6    | 206/363 [00:17<00:17,  8.98it/s] 57%|#####7    | 207/363 [00:17<00:18,  8.47it/s] 57%|#####7    | 208/363 [00:17<00:19,  8.07it/s] 58%|#####7    | 209/363 [00:18<00:20,  7.68it/s] 58%|#####7    | 210/363 [00:18<00:20,  7.62it/s] 58%|#####8    | 211/363 [00:18<00:19,  7.62it/s] 59%|#####8    | 213/363 [00:18<00:16,  9.07it/s] 59%|#####9    | 215/363 [00:18<00:14, 10.34it/s] 60%|#####9    | 217/363 [00:18<00:12, 11.42it/s] 60%|######    | 219/363 [00:18<00:12, 11.76it/s] 61%|######    | 221/363 [00:19<00:11, 11.86it/s] 61%|######1   | 223/363 [00:19<00:11, 11.89it/s] 62%|######1   | 225/363 [00:19<00:11, 12.23it/s] 63%|######2   | 227/363 [00:19<00:10, 12.39it/s] 63%|######3   | 229/363 [00:19<00:10, 12.60it/s] 64%|######3   | 231/363 [00:19<00:10, 12.24it/s] 64%|######4   | 233/363 [00:20<00:12, 10.49it/s] 65%|######4   | 235/363 [00:20<00:12, 10.00it/s] 65%|######5   | 237/363 [00:20<00:11, 10.74it/s] 66%|######5   | 239/363 [00:20<00:10, 11.62it/s] 66%|######6   | 241/363 [00:20<00:10, 12.06it/s] 67%|######6   | 243/363 [00:20<00:09, 12.40it/s] 67%|######7   | 245/363 [00:21<00:09, 12.11it/s] 68%|######8   | 247/363 [00:21<00:09, 11.90it/s] 69%|######8   | 249/363 [00:21<00:09, 11.93it/s] 69%|######9   | 251/363 [00:21<00:09, 12.25it/s] 70%|######9   | 253/363 [00:21<00:08, 12.68it/s] 70%|#######   | 255/363 [00:21<00:08, 12.83it/s] 71%|#######   | 257/363 [00:22<00:08, 12.47it/s] 71%|#######1  | 259/363 [00:22<00:08, 12.62it/s] 72%|#######1  | 261/363 [00:22<00:08, 11.77it/s] 72%|#######2  | 263/363 [00:22<00:09, 10.67it/s] 73%|#######3  | 265/363 [00:22<00:09, 10.58it/s] 74%|#######3  | 267/363 [00:23<00:08, 10.83it/s] 74%|#######4  | 269/363 [00:23<00:09, 10.02it/s] 75%|#######4  | 271/363 [00:23<00:08, 10.58it/s] 75%|#######5  | 273/363 [00:23<00:08, 11.25it/s] 76%|#######5  | 275/363 [00:23<00:08, 10.59it/s] 76%|#######6  | 277/363 [00:23<00:07, 11.26it/s] 77%|#######6  | 279/363 [00:24<00:07, 11.98it/s] 77%|#######7  | 281/363 [00:24<00:06, 12.34it/s] 78%|#######7  | 283/363 [00:24<00:06, 12.58it/s] 79%|#######8  | 285/363 [00:24<00:06, 12.97it/s] 79%|#######9  | 287/363 [00:24<00:05, 13.24it/s] 80%|#######9  | 289/363 [00:24<00:05, 13.39it/s] 80%|########  | 291/363 [00:24<00:05, 13.27it/s] 81%|########  | 293/363 [00:25<00:05, 13.45it/s] 81%|########1 | 295/363 [00:25<00:05, 13.04it/s] 82%|########1 | 297/363 [00:25<00:04, 13.36it/s] 82%|########2 | 299/363 [00:25<00:04, 13.71it/s] 83%|########2 | 301/363 [00:25<00:04, 13.40it/s] 83%|########3 | 303/363 [00:25<00:04, 13.37it/s] 84%|########4 | 305/363 [00:26<00:04, 13.65it/s] 85%|########4 | 307/363 [00:26<00:04, 13.19it/s] 85%|########5 | 309/363 [00:26<00:04, 13.21it/s] 86%|########5 | 311/363 [00:26<00:05,  9.10it/s] 86%|########6 | 313/363 [00:26<00:05,  9.98it/s] 87%|########6 | 315/363 [00:27<00:04,  9.88it/s] 87%|########7 | 317/363 [00:27<00:04, 10.63it/s] 88%|########7 | 319/363 [00:27<00:04, 10.75it/s] 88%|########8 | 321/363 [00:27<00:03, 11.44it/s] 89%|########8 | 323/363 [00:27<00:03, 11.87it/s] 90%|########9 | 325/363 [00:27<00:03, 12.33it/s] 90%|######### | 327/363 [00:27<00:02, 12.51it/s] 91%|######### | 329/363 [00:28<00:02, 12.61it/s] 91%|#########1| 331/363 [00:28<00:02, 12.68it/s] 92%|#########1| 333/363 [00:28<00:02, 13.19it/s] 92%|#########2| 335/363 [00:28<00:02, 13.09it/s] 93%|#########2| 337/363 [00:28<00:02, 12.75it/s] 93%|#########3| 339/363 [00:28<00:01, 12.72it/s] 94%|#########3| 341/363 [00:29<00:01, 12.69it/s] 94%|#########4| 343/363 [00:29<00:01, 13.04it/s] 95%|#########5| 345/363 [00:29<00:01, 12.72it/s] 96%|#########5| 347/363 [00:29<00:01, 12.76it/s] 96%|#########6| 349/363 [00:29<00:01, 12.79it/s] 97%|#########6| 351/363 [00:29<00:01, 11.02it/s] 97%|#########7| 353/363 [00:30<00:00, 11.50it/s] 98%|#########7| 355/363 [00:30<00:00, 11.96it/s] 98%|#########8| 357/363 [00:30<00:00, 12.35it/s] 99%|#########8| 359/363 [00:30<00:00, 12.37it/s] 99%|#########9| 361/363 [00:30<00:00, 12.26it/s]100%|##########| 363/363 [00:30<00:00, 10.64it/s]100%|##########| 363/363 [00:30<00:00, 11.72it/s]
+Feature table shape: (363, 361)
+   patient_id   fs  n_samples  ...  target  basal_pattern_meta  sudden_death_meta
+0      188981  100       1200  ...       1                   1                  0
+1      251972  100       1200  ...       0                   0                  0
+2      265715  100       1200  ...       0                   0                  0
+3      267628  100       1200  ...       0                   0                  0
+4      267630  100       1200  ...       1                   0                  0
+
+[5 rows x 361 columns]
+patient_id            0.0
+fs                    0.0
+n_samples             0.0
+I_strip_mean          0.0
+I_strip_std           0.0
+I_strip_min           0.0
+I_strip_max           0.0
+I_strip_ptp           0.0
+I_strip_median        0.0
+I_strip_q05           0.0
+I_strip_q25           0.0
+I_strip_q75           0.0
+I_strip_q95           0.0
+I_strip_rms           0.0
+I_strip_abs_area      0.0
+I_strip_energy        0.0
+I_strip_skew          0.0
+I_strip_kurtosis      0.0
+I_strip_zero_cross    0.0
+II_strip_mean         0.0
+dtype: float64
+Metadata shortcut-risk columns detected: ['basal_pattern_meta', 'sudden_death_meta']
+These columns are kept only for ablation and failure analysis. They are excluded from the primary ECG-only benchmark.
+Saved plot: /IDSC2026/outputs/plots/Preprocessing Missing Ratio Histogram.png
+
+================================================================================
+Running pipeline/test_split.py
+================================================================================
+  0%|          | 0/356 [00:00<?, ?it/s]  1%|          | 2/356 [00:00<00:19, 18.08it/s]  1%|1         | 5/356 [00:00<00:15, 22.78it/s]  2%|2         | 8/356 [00:00<00:14, 24.46it/s]  3%|3         | 11/356 [00:00<00:13, 25.08it/s]  4%|3         | 14/356 [00:00<00:13, 25.76it/s]  5%|4         | 17/356 [00:00<00:13, 24.39it/s]  6%|5         | 20/356 [00:00<00:14, 23.92it/s]  6%|6         | 23/356 [00:00<00:14, 23.66it/s]  7%|7         | 26/356 [00:01<00:13, 23.71it/s]  8%|8         | 29/356 [00:01<00:13, 23.87it/s]  9%|8         | 32/356 [00:01<00:13, 23.44it/s] 10%|9         | 35/356 [00:01<00:13, 23.92it/s] 11%|#         | 38/356 [00:01<00:12, 25.19it/s] 12%|#1        | 42/356 [00:01<00:11, 28.29it/s] 13%|#2        | 46/356 [00:01<00:10, 29.59it/s] 14%|#4        | 50/356 [00:01<00:09, 31.45it/s] 15%|#5        | 54/356 [00:02<00:10, 28.01it/s] 16%|#6        | 57/356 [00:02<00:11, 26.77it/s] 17%|#6        | 60/356 [00:02<00:11, 26.16it/s] 18%|#7        | 63/356 [00:02<00:11, 26.26it/s] 19%|#8        | 67/356 [00:02<00:10, 28.64it/s] 20%|##        | 72/356 [00:02<00:08, 32.60it/s] 22%|##1       | 77/356 [00:02<00:07, 35.91it/s] 23%|##3       | 82/356 [00:02<00:06, 39.19it/s] 24%|##4       | 87/356 [00:03<00:06, 40.98it/s] 26%|##5       | 92/356 [00:03<00:06, 42.38it/s] 27%|##7       | 97/356 [00:03<00:05, 43.36it/s] 29%|##8       | 102/356 [00:03<00:05, 43.25it/s] 30%|###       | 107/356 [00:03<00:06, 39.99it/s] 31%|###1      | 112/356 [00:03<00:06, 38.04it/s] 33%|###2      | 116/356 [00:03<00:06, 38.29it/s] 34%|###3      | 120/356 [00:03<00:06, 37.97it/s] 35%|###5      | 125/356 [00:03<00:05, 40.51it/s] 37%|###6      | 130/356 [00:04<00:05, 41.87it/s] 38%|###7      | 135/356 [00:04<00:05, 43.15it/s] 39%|###9      | 140/356 [00:04<00:04, 43.84it/s] 41%|####      | 145/356 [00:04<00:04, 44.46it/s] 42%|####2     | 150/356 [00:04<00:04, 44.73it/s] 44%|####3     | 155/356 [00:04<00:04, 45.44it/s] 45%|####4     | 160/356 [00:04<00:04, 46.12it/s] 46%|####6     | 165/356 [00:04<00:04, 45.07it/s] 48%|####7     | 170/356 [00:04<00:04, 42.53it/s] 49%|####9     | 175/356 [00:05<00:04, 39.76it/s] 51%|#####     | 180/356 [00:05<00:04, 41.19it/s] 52%|#####1    | 185/356 [00:05<00:03, 42.82it/s] 53%|#####3    | 190/356 [00:05<00:03, 42.93it/s] 55%|#####4    | 195/356 [00:05<00:03, 42.67it/s] 56%|#####6    | 200/356 [00:05<00:03, 42.92it/s] 58%|#####7    | 205/356 [00:05<00:03, 41.94it/s] 59%|#####8    | 210/356 [00:05<00:03, 42.97it/s] 60%|######    | 215/356 [00:06<00:03, 43.24it/s] 62%|######1   | 220/356 [00:06<00:03, 43.27it/s] 63%|######3   | 225/356 [00:06<00:03, 42.34it/s] 65%|######4   | 230/356 [00:06<00:03, 40.54it/s] 66%|######6   | 235/356 [00:06<00:02, 40.83it/s] 67%|######7   | 240/356 [00:06<00:02, 41.35it/s] 69%|######8   | 245/356 [00:06<00:02, 40.08it/s] 70%|#######   | 250/356 [00:06<00:02, 39.74it/s] 71%|#######1  | 254/356 [00:07<00:02, 39.43it/s] 72%|#######2  | 258/356 [00:07<00:02, 38.21it/s] 74%|#######3  | 262/356 [00:07<00:02, 37.94it/s] 75%|#######5  | 267/356 [00:07<00:02, 38.76it/s] 76%|#######6  | 272/356 [00:07<00:02, 40.93it/s] 78%|#######7  | 277/356 [00:07<00:01, 42.23it/s] 79%|#######9  | 282/356 [00:07<00:01, 39.49it/s] 81%|########  | 287/356 [00:07<00:01, 40.48it/s] 82%|########2 | 292/356 [00:07<00:01, 39.52it/s] 83%|########3 | 296/356 [00:08<00:01, 35.98it/s] 84%|########4 | 300/356 [00:08<00:01, 31.01it/s] 85%|########5 | 304/356 [00:08<00:01, 29.20it/s] 87%|########6 | 308/356 [00:08<00:01, 29.17it/s] 88%|########7 | 313/356 [00:08<00:01, 32.87it/s] 89%|########9 | 318/356 [00:08<00:01, 35.69it/s] 91%|######### | 323/356 [00:08<00:00, 38.95it/s] 92%|#########2| 328/356 [00:09<00:00, 38.26it/s] 94%|#########3| 333/356 [00:09<00:00, 40.34it/s] 95%|#########4| 338/356 [00:09<00:00, 40.23it/s] 96%|#########6| 343/356 [00:09<00:00, 39.39it/s] 98%|#########7| 348/356 [00:09<00:00, 40.47it/s] 99%|#########9| 353/356 [00:09<00:00, 41.52it/s]100%|##########| 356/356 [00:09<00:00, 36.65it/s]
+Shared split file: /IDSC2026/outputs/predict/Shared Patient Split.csv
+Feature audit file: /IDSC2026/outputs/predict/Feature Set Audit.csv
+Benchmark patient count: 356
+Train / Validation / Test: 227 57 72
+Train labels: (array([0, 1]), array([183,  44]))
+Validation labels: (array([0, 1]), array([46, 11]))
+Test labels: (array([0, 1]), array([58, 14]))
+ECG-only feature count: 357
+Metadata shortcut-risk columns excluded from the primary benchmark: ['basal_pattern_meta', 'sudden_death_meta']
+Tabular train shape: (227, 357)
+Sequence train shape: (227, 70, 12)
+                  Feature Set  ...                       Excluded columns
+0  ECG-only primary benchmark  ...  basal_pattern_meta, sudden_death_meta
+1     ECG + metadata ablation  ...                     patient_id, target
+
+[2 rows x 4 columns]
+Saved plot: /IDSC2026/outputs/plots/Test Split Shared Patient Distribution.png
+   patient_id  target  split
+0     1187599       0  train
+1      395553       0  train
+2      865998       0  train
+3      873255       1  train
+4     1272319       0  train
+
+================================================================================
+Running pipeline/train_models.py
+================================================================================
+Training class weights: {0: 0.6202185792349727, 1: 2.5795454545454546}
+scale_pos_weight for XGBoost: 4.159090909090909
+
+Training XGBoost Features on ECG-only features ...
+XGBoost Features | PR-AUC=0.4656 | F1=0.5517 | Sensitivity=0.5714 | False Negatives=6
+Prediction CSV: /IDSC2026/outputs/predict/XGBoost Features Predictions.csv
+
+Training Random Forest Features on ECG-only features ...
+Random Forest Features | PR-AUC=0.4565 | F1=0.4545 | Sensitivity=0.3571 | False Negatives=9
+Prediction CSV: /IDSC2026/outputs/predict/Random Forest Features Predictions.csv
+
+Training SVM RBF Features on ECG-only features ...
+SVM RBF Features | PR-AUC=0.3715 | F1=0.2500 | Sensitivity=0.2143 | False Negatives=11
+Prediction CSV: /IDSC2026/outputs/predict/SVM RBF Features Predictions.csv
+
+Training AdaBoost on ECG-only features ...
+AdaBoost | PR-AUC=0.4282 | F1=0.2105 | Sensitivity=0.1429 | False Negatives=12
+Prediction CSV: /IDSC2026/outputs/predict/AdaBoost Predictions.csv
+
+Training 1D CNN Median Beat ...
+Epoch 1/200
+15/15 - 8s - 546ms/step - auc: 0.6269 - loss: 0.6771 - val_auc: 0.7065 - val_loss: 0.4566
+Epoch 2/200
+15/15 - 0s - 21ms/step - auc: 0.8339 - loss: 0.5342 - val_auc: 0.7045 - val_loss: 0.4571
+Epoch 3/200
+15/15 - 0s - 23ms/step - auc: 0.8874 - loss: 0.4536 - val_auc: 0.7174 - val_loss: 0.4617
+Epoch 4/200
+15/15 - 0s - 26ms/step - auc: 0.9263 - loss: 0.3770 - val_auc: 0.7372 - val_loss: 0.4574
+Epoch 5/200
+15/15 - 0s - 23ms/step - auc: 0.9627 - loss: 0.3064 - val_auc: 0.7411 - val_loss: 0.4658
+Epoch 6/200
+15/15 - 0s - 24ms/step - auc: 0.9799 - loss: 0.2364 - val_auc: 0.7737 - val_loss: 0.4595
+Epoch 7/200
+15/15 - 0s - 21ms/step - auc: 0.9871 - loss: 0.1811 - val_auc: 0.7866 - val_loss: 0.4502
+Epoch 8/200
+15/15 - 0s - 25ms/step - auc: 0.9926 - loss: 0.1319 - val_auc: 0.7609 - val_loss: 0.5003
+Epoch 9/200
+15/15 - 0s - 24ms/step - auc: 0.9939 - loss: 0.1132 - val_auc: 0.8113 - val_loss: 0.4927
+Epoch 10/200
+15/15 - 0s - 23ms/step - auc: 0.9925 - loss: 0.1010 - val_auc: 0.8241 - val_loss: 0.4824
+Epoch 11/200
+15/15 - 0s - 23ms/step - auc: 0.9952 - loss: 0.1064 - val_auc: 0.7787 - val_loss: 0.9897
+Epoch 12/200
+15/15 - 0s - 21ms/step - auc: 0.9899 - loss: 0.1384 - val_auc: 0.8113 - val_loss: 0.6540
+Epoch 13/200
+15/15 - 0s - 27ms/step - auc: 0.9953 - loss: 0.0837 - val_auc: 0.7925 - val_loss: 0.7154
+Epoch 14/200
+15/15 - 0s - 24ms/step - auc: 0.9991 - loss: 0.0515 - val_auc: 0.8389 - val_loss: 0.5598
+Epoch 15/200
+15/15 - 0s - 20ms/step - auc: 0.9993 - loss: 0.0463 - val_auc: 0.8083 - val_loss: 0.6150
+Epoch 16/200
+15/15 - 0s - 21ms/step - auc: 0.9995 - loss: 0.0430 - val_auc: 0.8063 - val_loss: 0.6020
+Epoch 17/200
+15/15 - 0s - 21ms/step - auc: 0.9999 - loss: 0.0283 - val_auc: 0.7510 - val_loss: 0.8292
+Epoch 18/200
+15/15 - 0s - 20ms/step - auc: 0.9994 - loss: 0.0258 - val_auc: 0.7974 - val_loss: 0.6561
+Epoch 19/200
+15/15 - 0s - 20ms/step - auc: 0.9999 - loss: 0.0205 - val_auc: 0.8014 - val_loss: 0.6458
+Epoch 20/200
+15/15 - 0s - 20ms/step - auc: 0.9999 - loss: 0.0205 - val_auc: 0.7915 - val_loss: 0.6387
+Epoch 21/200
+15/15 - 0s - 25ms/step - auc: 0.9999 - loss: 0.0240 - val_auc: 0.8014 - val_loss: 0.7146
+Epoch 22/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0135 - val_auc: 0.8498 - val_loss: 0.6531
+Epoch 23/200
+15/15 - 1s - 38ms/step - auc: 0.9999 - loss: 0.0187 - val_auc: 0.8478 - val_loss: 0.6670
+Epoch 24/200
+15/15 - 1s - 34ms/step - auc: 0.9999 - loss: 0.0167 - val_auc: 0.8271 - val_loss: 0.7248
+Epoch 25/200
+15/15 - 0s - 26ms/step - auc: 1.0000 - loss: 0.0115 - val_auc: 0.8547 - val_loss: 0.6941
+Epoch 26/200
+15/15 - 0s - 29ms/step - auc: 1.0000 - loss: 0.0052 - val_auc: 0.8557 - val_loss: 0.6319
+Epoch 27/200
+15/15 - 0s - 26ms/step - auc: 1.0000 - loss: 0.0049 - val_auc: 0.8587 - val_loss: 0.6484
+Epoch 28/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0027 - val_auc: 0.8221 - val_loss: 0.6764
+Epoch 29/200
+15/15 - 0s - 24ms/step - auc: 1.0000 - loss: 0.0061 - val_auc: 0.8251 - val_loss: 0.7124
+Epoch 30/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0041 - val_auc: 0.8300 - val_loss: 0.7122
+Epoch 31/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0035 - val_auc: 0.8399 - val_loss: 0.7035
+Epoch 32/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0040 - val_auc: 0.8281 - val_loss: 0.7017
+Epoch 33/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0025 - val_auc: 0.8577 - val_loss: 0.7376
+Epoch 34/200
+15/15 - 0s - 24ms/step - auc: 1.0000 - loss: 0.0023 - val_auc: 0.8261 - val_loss: 0.7181
+Epoch 35/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0019 - val_auc: 0.8310 - val_loss: 0.7372
+Epoch 36/200
+15/15 - 0s - 21ms/step - auc: 1.0000 - loss: 0.0017 - val_auc: 0.8310 - val_loss: 0.7406
+Epoch 37/200
+15/15 - 0s - 27ms/step - auc: 1.0000 - loss: 7.5734e-04 - val_auc: 0.8281 - val_loss: 0.7397
+Epoch 38/200
+15/15 - 0s - 20ms/step - auc: 1.0000 - loss: 8.4014e-04 - val_auc: 0.8300 - val_loss: 0.7402
+Epoch 39/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 0.0012 - val_auc: 0.7984 - val_loss: 0.7528
+Epoch 40/200
+15/15 - 0s - 20ms/step - auc: 1.0000 - loss: 0.0010 - val_auc: 0.8123 - val_loss: 0.7992
+Epoch 41/200
+15/15 - 0s - 25ms/step - auc: 1.0000 - loss: 0.0020 - val_auc: 0.8162 - val_loss: 0.7782
+Epoch 42/200
+15/15 - 0s - 21ms/step - auc: 1.0000 - loss: 0.0011 - val_auc: 0.8132 - val_loss: 0.7565
+Epoch 43/200
+15/15 - 0s - 21ms/step - auc: 1.0000 - loss: 0.0014 - val_auc: 0.8053 - val_loss: 0.7759
+Epoch 44/200
+15/15 - 0s - 20ms/step - auc: 1.0000 - loss: 9.2699e-04 - val_auc: 0.8024 - val_loss: 0.7886
+Epoch 45/200
+15/15 - 0s - 22ms/step - auc: 1.0000 - loss: 5.3314e-04 - val_auc: 0.8379 - val_loss: 0.7948
+Epoch 46/200
+15/15 - 0s - 24ms/step - auc: 1.0000 - loss: 8.9079e-04 - val_auc: 0.8370 - val_loss: 0.7848
+Epoch 47/200
+15/15 - 0s - 21ms/step - auc: 1.0000 - loss: 6.8891e-04 - val_auc: 0.8034 - val_loss: 0.8020
+Epoch 47: early stopping
+Restoring model weights from the end of the best epoch: 27.
+1D CNN Median Beat | AUC=0.7377 | F1=0.5000 | Sensitivity=0.4286 | False Negatives=8
+Prediction CSV: /IDSC2026/outputs/predict/1D CNN Median Beat Predictions.csv
+
+Training ResNet 1D Median Beat ...
+Epoch 1/200
+15/15 - 17s - 1s/step - auc: 0.6183 - loss: 0.6771 - val_auc: 0.7678 - val_loss: 0.5734
+Epoch 2/200
+15/15 - 1s - 37ms/step - auc: 0.7878 - loss: 0.5644 - val_auc: 0.7164 - val_loss: 0.4823
+Epoch 3/200
+15/15 - 1s - 40ms/step - auc: 0.8961 - loss: 0.4308 - val_auc: 0.7342 - val_loss: 0.4487
+Epoch 4/200
+15/15 - 1s - 37ms/step - auc: 0.9368 - loss: 0.3504 - val_auc: 0.7540 - val_loss: 0.4549
+Epoch 5/200
+15/15 - 1s - 42ms/step - auc: 0.9739 - loss: 0.2421 - val_auc: 0.7727 - val_loss: 0.4588
+Epoch 6/200
+15/15 - 1s - 44ms/step - auc: 0.9899 - loss: 0.1579 - val_auc: 0.7777 - val_loss: 0.4409
+Epoch 7/200
+15/15 - 0s - 33ms/step - auc: 0.9868 - loss: 0.1531 - val_auc: 0.7352 - val_loss: 0.8550
+Epoch 8/200
+15/15 - 1s - 35ms/step - auc: 0.9871 - loss: 0.1475 - val_auc: 0.7540 - val_loss: 0.6585
+Epoch 9/200
+15/15 - 1s - 66ms/step - auc: 0.9827 - loss: 0.1688 - val_auc: 0.7559 - val_loss: 0.5944
+Epoch 10/200
+15/15 - 1s - 51ms/step - auc: 0.9975 - loss: 0.0787 - val_auc: 0.7747 - val_loss: 0.6004
+Epoch 11/200
+15/15 - 1s - 38ms/step - auc: 0.9991 - loss: 0.0622 - val_auc: 0.7213 - val_loss: 0.7667
+Epoch 12/200
+15/15 - 1s - 44ms/step - auc: 0.9999 - loss: 0.0418 - val_auc: 0.8113 - val_loss: 0.5966
+Epoch 13/200
+15/15 - 1s - 51ms/step - auc: 1.0000 - loss: 0.0215 - val_auc: 0.8231 - val_loss: 0.6821
+Epoch 14/200
+15/15 - 1s - 40ms/step - auc: 1.0000 - loss: 0.0144 - val_auc: 0.8162 - val_loss: 0.6809
+Epoch 15/200
+15/15 - 1s - 68ms/step - auc: 0.9998 - loss: 0.0232 - val_auc: 0.7955 - val_loss: 0.6963
+Epoch 16/200
+15/15 - 1s - 42ms/step - auc: 0.9997 - loss: 0.0233 - val_auc: 0.7935 - val_loss: 0.7008
+Epoch 17/200
+15/15 - 1s - 56ms/step - auc: 1.0000 - loss: 0.0230 - val_auc: 0.7806 - val_loss: 0.8021
+Epoch 18/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0117 - val_auc: 0.7905 - val_loss: 0.7914
+Epoch 19/200
+15/15 - 0s - 33ms/step - auc: 1.0000 - loss: 0.0103 - val_auc: 0.8152 - val_loss: 0.8160
+Epoch 20/200
+15/15 - 1s - 40ms/step - auc: 0.9999 - loss: 0.0200 - val_auc: 0.6996 - val_loss: 2.2488
+Epoch 21/200
+15/15 - 1s - 45ms/step - auc: 0.9817 - loss: 0.1673 - val_auc: 0.7441 - val_loss: 2.0277
+Epoch 22/200
+15/15 - 1s - 56ms/step - auc: 0.9962 - loss: 0.0838 - val_auc: 0.7638 - val_loss: 1.0554
+Epoch 23/200
+15/15 - 1s - 52ms/step - auc: 0.9885 - loss: 0.1493 - val_auc: 0.7342 - val_loss: 1.9460
+Epoch 24/200
+15/15 - 1s - 46ms/step - auc: 0.9878 - loss: 0.1347 - val_auc: 0.7253 - val_loss: 1.8985
+Epoch 25/200
+15/15 - 1s - 47ms/step - auc: 0.9906 - loss: 0.1159 - val_auc: 0.7530 - val_loss: 1.1900
+Epoch 26/200
+15/15 - 1s - 36ms/step - auc: 0.9954 - loss: 0.0939 - val_auc: 0.7619 - val_loss: 1.4636
+Epoch 27/200
+15/15 - 1s - 38ms/step - auc: 0.9994 - loss: 0.0380 - val_auc: 0.7737 - val_loss: 1.6748
+Epoch 28/200
+15/15 - 1s - 60ms/step - auc: 0.9842 - loss: 0.1153 - val_auc: 0.7292 - val_loss: 1.2658
+Epoch 29/200
+15/15 - 1s - 38ms/step - auc: 0.9986 - loss: 0.0626 - val_auc: 0.8113 - val_loss: 1.0174
+Epoch 30/200
+15/15 - 1s - 48ms/step - auc: 0.9988 - loss: 0.0478 - val_auc: 0.7984 - val_loss: 1.1775
+Epoch 31/200
+15/15 - 1s - 59ms/step - auc: 1.0000 - loss: 0.0166 - val_auc: 0.7846 - val_loss: 1.1393
+Epoch 32/200
+15/15 - 1s - 64ms/step - auc: 1.0000 - loss: 0.0126 - val_auc: 0.7747 - val_loss: 1.0596
+Epoch 33/200
+15/15 - 1s - 40ms/step - auc: 1.0000 - loss: 0.0119 - val_auc: 0.7698 - val_loss: 1.0302
+Epoch 33: early stopping
+Restoring model weights from the end of the best epoch: 13.
+ResNet 1D Median Beat | AUC=0.7020 | F1=0.4000 | Sensitivity=0.3571 | False Negatives=9
+Prediction CSV: /IDSC2026/outputs/predict/ResNet 1D Median Beat Predictions.csv
+
+Training CNN + BiGRU Median Beat ...
+Epoch 1/200
+15/15 - 23s - 2s/step - auc: 0.4920 - loss: 0.7019 - val_auc: 0.6561 - val_loss: 0.6930
+Epoch 2/200
+15/15 - 2s - 114ms/step - auc: 0.6536 - loss: 0.6711 - val_auc: 0.7638 - val_loss: 0.6882
+Epoch 3/200
+15/15 - 3s - 200ms/step - auc: 0.6824 - loss: 0.6391 - val_auc: 0.7727 - val_loss: 0.6326
+Epoch 4/200
+15/15 - 2s - 149ms/step - auc: 0.7725 - loss: 0.5900 - val_auc: 0.7747 - val_loss: 0.6015
+Epoch 5/200
+15/15 - 2s - 163ms/step - auc: 0.8254 - loss: 0.5206 - val_auc: 0.7727 - val_loss: 0.5439
+Epoch 6/200
+15/15 - 2s - 126ms/step - auc: 0.8510 - loss: 0.4673 - val_auc: 0.7638 - val_loss: 0.4892
+Epoch 7/200
+15/15 - 2s - 103ms/step - auc: 0.9146 - loss: 0.3901 - val_auc: 0.6927 - val_loss: 0.5177
+Epoch 8/200
+15/15 - 2s - 101ms/step - auc: 0.9276 - loss: 0.3317 - val_auc: 0.7055 - val_loss: 0.6541
+Epoch 9/200
+15/15 - 1s - 87ms/step - auc: 0.9586 - loss: 0.2581 - val_auc: 0.7342 - val_loss: 0.5912
+Epoch 10/200
+15/15 - 1s - 82ms/step - auc: 0.9755 - loss: 0.1919 - val_auc: 0.7559 - val_loss: 0.6334
+Epoch 11/200
+15/15 - 1s - 75ms/step - auc: 0.9536 - loss: 0.2776 - val_auc: 0.8113 - val_loss: 0.6596
+Epoch 12/200
+15/15 - 1s - 77ms/step - auc: 0.9698 - loss: 0.2314 - val_auc: 0.7787 - val_loss: 0.6138
+Epoch 13/200
+15/15 - 1s - 75ms/step - auc: 0.9891 - loss: 0.1552 - val_auc: 0.7875 - val_loss: 0.7646
+Epoch 14/200
+15/15 - 1s - 59ms/step - auc: 0.9876 - loss: 0.1382 - val_auc: 0.7530 - val_loss: 0.9691
+Epoch 15/200
+15/15 - 1s - 65ms/step - auc: 0.9922 - loss: 0.1206 - val_auc: 0.7549 - val_loss: 0.7283
+Epoch 16/200
+15/15 - 1s - 59ms/step - auc: 0.9802 - loss: 0.2033 - val_auc: 0.7441 - val_loss: 0.6258
+Epoch 17/200
+15/15 - 1s - 63ms/step - auc: 0.9946 - loss: 0.1205 - val_auc: 0.6868 - val_loss: 0.7171
+Epoch 18/200
+15/15 - 1s - 58ms/step - auc: 0.9955 - loss: 0.1081 - val_auc: 0.6986 - val_loss: 1.0492
+Epoch 19/200
+15/15 - 1s - 54ms/step - auc: 0.9958 - loss: 0.0785 - val_auc: 0.7540 - val_loss: 0.7195
+Epoch 20/200
+15/15 - 1s - 59ms/step - auc: 0.9998 - loss: 0.0309 - val_auc: 0.7441 - val_loss: 0.7405
+Epoch 21/200
+15/15 - 1s - 68ms/step - auc: 1.0000 - loss: 0.0150 - val_auc: 0.7302 - val_loss: 0.8521
+Epoch 22/200
+15/15 - 1s - 63ms/step - auc: 0.9999 - loss: 0.0181 - val_auc: 0.7164 - val_loss: 0.8555
+Epoch 23/200
+15/15 - 1s - 64ms/step - auc: 0.9999 - loss: 0.0170 - val_auc: 0.6947 - val_loss: 0.9898
+Epoch 24/200
+15/15 - 1s - 54ms/step - auc: 1.0000 - loss: 0.0197 - val_auc: 0.7480 - val_loss: 0.8494
+Epoch 25/200
+15/15 - 1s - 54ms/step - auc: 1.0000 - loss: 0.0081 - val_auc: 0.6986 - val_loss: 1.0053
+Epoch 26/200
+15/15 - 1s - 63ms/step - auc: 0.9998 - loss: 0.0184 - val_auc: 0.7065 - val_loss: 1.0295
+Epoch 27/200
+15/15 - 1s - 62ms/step - auc: 1.0000 - loss: 0.0050 - val_auc: 0.7026 - val_loss: 1.0873
+Epoch 28/200
+15/15 - 1s - 58ms/step - auc: 1.0000 - loss: 0.0029 - val_auc: 0.7105 - val_loss: 1.1182
+Epoch 29/200
+15/15 - 1s - 59ms/step - auc: 1.0000 - loss: 0.0025 - val_auc: 0.7125 - val_loss: 1.1323
+Epoch 30/200
+15/15 - 1s - 59ms/step - auc: 1.0000 - loss: 0.0018 - val_auc: 0.6917 - val_loss: 1.1526
+Epoch 31/200
+15/15 - 1s - 66ms/step - auc: 1.0000 - loss: 0.0018 - val_auc: 0.7006 - val_loss: 1.1909
+Epoch 31: early stopping
+Restoring model weights from the end of the best epoch: 11.
+CNN + BiGRU Median Beat | AUC=0.6786 | F1=0.5000 | Sensitivity=0.5000 | False Negatives=7
+Prediction CSV: /IDSC2026/outputs/predict/CNN + BiGRU Median Beat Predictions.csv
+
+Training Transformer Encoder Median Beat ...
+Epoch 1/200
+15/15 - 12s - 809ms/step - auc: 0.5934 - loss: 0.6967 - val_auc: 0.6887 - val_loss: 0.7661
+Epoch 2/200
+15/15 - 1s - 72ms/step - auc: 0.5954 - loss: 0.6863 - val_auc: 0.6729 - val_loss: 0.7754
+Epoch 3/200
+15/15 - 1s - 80ms/step - auc: 0.6932 - loss: 0.6357 - val_auc: 0.6660 - val_loss: 0.7236
+Epoch 4/200
+15/15 - 1s - 88ms/step - auc: 0.7674 - loss: 0.5937 - val_auc: 0.6976 - val_loss: 0.6549
+Epoch 5/200
+15/15 - 1s - 97ms/step - auc: 0.8005 - loss: 0.5530 - val_auc: 0.7391 - val_loss: 0.7453
+Epoch 6/200
+15/15 - 1s - 93ms/step - auc: 0.8343 - loss: 0.5098 - val_auc: 0.7194 - val_loss: 0.7978
+Epoch 7/200
+15/15 - 1s - 82ms/step - auc: 0.8397 - loss: 0.4971 - val_auc: 0.7549 - val_loss: 0.8526
+Epoch 8/200
+15/15 - 1s - 82ms/step - auc: 0.8519 - loss: 0.4737 - val_auc: 0.7480 - val_loss: 0.7388
+Epoch 9/200
+15/15 - 1s - 84ms/step - auc: 0.8987 - loss: 0.4008 - val_auc: 0.7411 - val_loss: 0.6402
+Epoch 10/200
+15/15 - 1s - 96ms/step - auc: 0.9389 - loss: 0.3367 - val_auc: 0.7391 - val_loss: 0.8380
+Epoch 11/200
+15/15 - 1s - 88ms/step - auc: 0.9259 - loss: 0.3498 - val_auc: 0.7381 - val_loss: 0.8224
+Epoch 12/200
+15/15 - 2s - 100ms/step - auc: 0.9528 - loss: 0.2786 - val_auc: 0.7441 - val_loss: 0.8406
+Epoch 13/200
+15/15 - 2s - 104ms/step - auc: 0.9636 - loss: 0.2270 - val_auc: 0.7569 - val_loss: 0.8171
+Epoch 14/200
+15/15 - 1s - 97ms/step - auc: 0.9796 - loss: 0.1686 - val_auc: 0.7658 - val_loss: 0.7698
+Epoch 15/200
+15/15 - 1s - 84ms/step - auc: 0.9891 - loss: 0.1192 - val_auc: 0.7372 - val_loss: 1.0117
+Epoch 16/200
+15/15 - 1s - 92ms/step - auc: 0.9921 - loss: 0.1203 - val_auc: 0.7085 - val_loss: 1.3426
+Epoch 17/200
+15/15 - 1s - 95ms/step - auc: 0.9833 - loss: 0.1589 - val_auc: 0.7095 - val_loss: 2.2745
+Epoch 18/200
+15/15 - 1s - 88ms/step - auc: 0.9239 - loss: 0.3867 - val_auc: 0.8093 - val_loss: 1.4681
+Epoch 19/200
+15/15 - 1s - 87ms/step - auc: 0.9355 - loss: 0.3510 - val_auc: 0.7757 - val_loss: 1.7096
+Epoch 20/200
+15/15 - 1s - 85ms/step - auc: 0.8419 - loss: 0.5468 - val_auc: 0.7184 - val_loss: 0.5436
+Epoch 21/200
+15/15 - 1s - 92ms/step - auc: 0.9485 - loss: 0.3210 - val_auc: 0.8004 - val_loss: 0.5882
+Epoch 22/200
+15/15 - 1s - 94ms/step - auc: 0.9905 - loss: 0.1613 - val_auc: 0.7846 - val_loss: 0.6080
+Epoch 23/200
+15/15 - 2s - 111ms/step - auc: 0.9971 - loss: 0.0887 - val_auc: 0.7925 - val_loss: 0.6429
+Epoch 24/200
+15/15 - 1s - 96ms/step - auc: 0.9986 - loss: 0.0639 - val_auc: 0.8043 - val_loss: 0.7828
+Epoch 25/200
+15/15 - 1s - 83ms/step - auc: 0.9993 - loss: 0.0533 - val_auc: 0.7915 - val_loss: 0.8719
+Epoch 26/200
+15/15 - 1s - 84ms/step - auc: 0.9975 - loss: 0.0512 - val_auc: 0.7688 - val_loss: 0.8599
+Epoch 27/200
+15/15 - 1s - 88ms/step - auc: 0.9996 - loss: 0.0293 - val_auc: 0.7698 - val_loss: 1.0237
+Epoch 28/200
+15/15 - 2s - 112ms/step - auc: 1.0000 - loss: 0.0188 - val_auc: 0.7579 - val_loss: 1.0637
+Epoch 29/200
+15/15 - 1s - 84ms/step - auc: 0.9999 - loss: 0.0236 - val_auc: 0.7549 - val_loss: 1.1631
+Epoch 30/200
+15/15 - 2s - 108ms/step - auc: 0.9988 - loss: 0.0344 - val_auc: 0.6927 - val_loss: 1.1543
+Epoch 31/200
+15/15 - 2s - 125ms/step - auc: 0.9994 - loss: 0.0220 - val_auc: 0.7036 - val_loss: 1.2574
+Epoch 32/200
+15/15 - 2s - 123ms/step - auc: 0.9996 - loss: 0.0263 - val_auc: 0.7283 - val_loss: 1.3610
+Epoch 33/200
+15/15 - 2s - 113ms/step - auc: 0.9967 - loss: 0.0498 - val_auc: 0.7451 - val_loss: 1.1711
+Epoch 34/200
+15/15 - 1s - 80ms/step - auc: 0.9983 - loss: 0.0545 - val_auc: 0.7292 - val_loss: 1.4735
+Epoch 35/200
+15/15 - 1s - 76ms/step - auc: 0.9906 - loss: 0.1528 - val_auc: 0.7540 - val_loss: 1.5391
+Epoch 36/200
+15/15 - 1s - 93ms/step - auc: 0.9744 - loss: 0.2230 - val_auc: 0.7273 - val_loss: 1.5835
+Epoch 37/200
+15/15 - 1s - 88ms/step - auc: 0.9549 - loss: 0.3005 - val_auc: 0.7085 - val_loss: 0.7329
+Epoch 38/200
+15/15 - 1s - 100ms/step - auc: 0.9828 - loss: 0.1728 - val_auc: 0.7816 - val_loss: 0.9196
+Epoch 38: early stopping
+Restoring model weights from the end of the best epoch: 18.
+Transformer Encoder Median Beat | AUC=0.7537 | F1=0.5000 | Sensitivity=0.5714 | False Negatives=6
+Prediction CSV: /IDSC2026/outputs/predict/Transformer Encoder Median Beat Predictions.csv
+
+Training Transfer Learning (In-domain DAE to Classifier) ...
+Epoch 1/200
+15/15 - 18s - 1s/step - loss: 15.1969 - val_loss: 10.9267
+Epoch 2/200
+15/15 - 1s - 60ms/step - loss: 8.1139 - val_loss: 8.6205
+Epoch 3/200
+15/15 - 1s - 47ms/step - loss: 5.8330 - val_loss: 5.8988
+Epoch 4/200
+15/15 - 1s - 43ms/step - loss: 4.6303 - val_loss: 5.2571
+Epoch 5/200
+15/15 - 1s - 47ms/step - loss: 3.9796 - val_loss: 4.9181
+Epoch 6/200
+15/15 - 1s - 62ms/step - loss: 3.4805 - val_loss: 5.0923
+Epoch 7/200
+15/15 - 1s - 49ms/step - loss: 3.1316 - val_loss: 4.8309
+Epoch 8/200
+15/15 - 1s - 55ms/step - loss: 2.7970 - val_loss: 4.6832
+Epoch 9/200
+15/15 - 1s - 58ms/step - loss: 2.6931 - val_loss: 4.0128
+Epoch 10/200
+15/15 - 1s - 55ms/step - loss: 2.5457 - val_loss: 4.2522
+Epoch 11/200
+15/15 - 1s - 58ms/step - loss: 2.4514 - val_loss: 5.0299
+Epoch 12/200
+15/15 - 1s - 52ms/step - loss: 2.5944 - val_loss: 4.9713
+Epoch 13/200
+15/15 - 1s - 54ms/step - loss: 2.5183 - val_loss: 3.5494
+Epoch 14/200
+15/15 - 1s - 58ms/step - loss: 2.2946 - val_loss: 3.8266
+Epoch 15/200
+15/15 - 1s - 55ms/step - loss: 2.1896 - val_loss: 3.8328
+Epoch 16/200
+15/15 - 1s - 66ms/step - loss: 2.2037 - val_loss: 3.4435
+Epoch 17/200
+15/15 - 1s - 55ms/step - loss: 2.0806 - val_loss: 4.2932
+Epoch 18/200
+15/15 - 1s - 41ms/step - loss: 2.0429 - val_loss: 3.8593
+Epoch 19/200
+15/15 - 1s - 40ms/step - loss: 2.0348 - val_loss: 3.5769
+Epoch 20/200
+15/15 - 1s - 46ms/step - loss: 1.9213 - val_loss: 3.9187
+Epoch 21/200
+15/15 - 1s - 41ms/step - loss: 1.9417 - val_loss: 3.6857
+Epoch 22/200
+15/15 - 1s - 43ms/step - loss: 1.9378 - val_loss: 3.8764
+Epoch 23/200
+15/15 - 1s - 49ms/step - loss: 1.8941 - val_loss: 3.6826
+Epoch 24/200
+15/15 - 1s - 41ms/step - loss: 1.8167 - val_loss: 3.4598
+Epoch 25/200
+15/15 - 1s - 38ms/step - loss: 1.8015 - val_loss: 3.6188
+Epoch 26/200
+15/15 - 1s - 46ms/step - loss: 1.6882 - val_loss: 3.7459
+Epoch 27/200
+15/15 - 1s - 48ms/step - loss: 1.8576 - val_loss: 3.6934
+Epoch 28/200
+15/15 - 1s - 60ms/step - loss: 1.8425 - val_loss: 3.7043
+Epoch 29/200
+15/15 - 1s - 47ms/step - loss: 2.0082 - val_loss: 3.5405
+Epoch 30/200
+15/15 - 1s - 45ms/step - loss: 2.2955 - val_loss: 3.5505
+Epoch 31/200
+15/15 - 1s - 64ms/step - loss: 2.4679 - val_loss: 3.8033
+Epoch 32/200
+15/15 - 1s - 69ms/step - loss: 2.8993 - val_loss: 3.2828
+Epoch 33/200
+15/15 - 1s - 86ms/step - loss: 2.6941 - val_loss: 5.5541
+Epoch 34/200
+15/15 - 1s - 59ms/step - loss: 2.7435 - val_loss: 8.1954
+Epoch 35/200
+15/15 - 1s - 69ms/step - loss: 3.1559 - val_loss: 4.8619
+Epoch 36/200
+15/15 - 1s - 74ms/step - loss: 2.7135 - val_loss: 4.1977
+Epoch 37/200
+15/15 - 1s - 68ms/step - loss: 2.1943 - val_loss: 3.8745
+Epoch 38/200
+15/15 - 1s - 38ms/step - loss: 1.9702 - val_loss: 3.1427
+Epoch 39/200
+15/15 - 1s - 54ms/step - loss: 1.8244 - val_loss: 2.7212
+Epoch 40/200
+15/15 - 1s - 50ms/step - loss: 1.7167 - val_loss: 2.3737
+Epoch 41/200
+15/15 - 1s - 62ms/step - loss: 1.5672 - val_loss: 2.3015
+Epoch 42/200
+15/15 - 1s - 76ms/step - loss: 1.4314 - val_loss: 2.6367
+Epoch 43/200
+15/15 - 1s - 48ms/step - loss: 1.4549 - val_loss: 2.7168
+Epoch 44/200
+15/15 - 1s - 39ms/step - loss: 1.4655 - val_loss: 2.2448
+Epoch 45/200
+15/15 - 1s - 42ms/step - loss: 1.4366 - val_loss: 1.9705
+Epoch 46/200
+15/15 - 1s - 37ms/step - loss: 1.3736 - val_loss: 2.2951
+Epoch 47/200
+15/15 - 1s - 36ms/step - loss: 1.4572 - val_loss: 2.9808
+Epoch 48/200
+15/15 - 1s - 39ms/step - loss: 1.6809 - val_loss: 2.3246
+Epoch 49/200
+15/15 - 1s - 53ms/step - loss: 1.5599 - val_loss: 2.0698
+Epoch 50/200
+15/15 - 1s - 48ms/step - loss: 1.3929 - val_loss: 2.5539
+Epoch 51/200
+15/15 - 1s - 47ms/step - loss: 1.3253 - val_loss: 2.7213
+Epoch 52/200
+15/15 - 1s - 46ms/step - loss: 1.3409 - val_loss: 2.4530
+Epoch 53/200
+15/15 - 1s - 38ms/step - loss: 1.3137 - val_loss: 1.8848
+Epoch 54/200
+15/15 - 1s - 38ms/step - loss: 1.2112 - val_loss: 1.9259
+Epoch 55/200
+15/15 - 1s - 38ms/step - loss: 1.1166 - val_loss: 2.2663
+Epoch 56/200
+15/15 - 1s - 42ms/step - loss: 1.2513 - val_loss: 2.0565
+Epoch 57/200
+15/15 - 1s - 55ms/step - loss: 1.1746 - val_loss: 2.0239
+Epoch 58/200
+15/15 - 1s - 55ms/step - loss: 1.0755 - val_loss: 2.3270
+Epoch 59/200
+15/15 - 1s - 38ms/step - loss: 1.0612 - val_loss: 2.4111
+Epoch 60/200
+15/15 - 1s - 39ms/step - loss: 1.0753 - val_loss: 2.1406
+Epoch 61/200
+15/15 - 1s - 55ms/step - loss: 1.0528 - val_loss: 1.8041
+Epoch 62/200
+15/15 - 1s - 44ms/step - loss: 0.9767 - val_loss: 1.9701
+Epoch 63/200
+15/15 - 1s - 56ms/step - loss: 0.9742 - val_loss: 1.9288
+Epoch 64/200
+15/15 - 1s - 65ms/step - loss: 0.9795 - val_loss: 1.8645
+Epoch 65/200
+15/15 - 0s - 33ms/step - loss: 0.9669 - val_loss: 2.0146
+Epoch 66/200
+15/15 - 1s - 36ms/step - loss: 0.8829 - val_loss: 2.2167
+Epoch 67/200
+15/15 - 1s - 34ms/step - loss: 0.8707 - val_loss: 2.0662
+Epoch 68/200
+15/15 - 1s - 40ms/step - loss: 0.8365 - val_loss: 1.7780
+Epoch 69/200
+15/15 - 1s - 46ms/step - loss: 0.7869 - val_loss: 1.6791
+Epoch 70/200
+15/15 - 1s - 49ms/step - loss: 0.7522 - val_loss: 1.6583
+Epoch 71/200
+15/15 - 1s - 37ms/step - loss: 0.7413 - val_loss: 1.7166
+Epoch 72/200
+15/15 - 1s - 34ms/step - loss: 0.7246 - val_loss: 1.7731
+Epoch 73/200
+15/15 - 1s - 35ms/step - loss: 0.7256 - val_loss: 1.7949
+Epoch 74/200
+15/15 - 1s - 36ms/step - loss: 0.7052 - val_loss: 2.0032
+Epoch 75/200
+15/15 - 1s - 38ms/step - loss: 0.7224 - val_loss: 2.0245
+Epoch 76/200
+15/15 - 1s - 35ms/step - loss: 0.7356 - val_loss: 1.9464
+Epoch 77/200
+15/15 - 1s - 35ms/step - loss: 0.7378 - val_loss: 1.8592
+Epoch 78/200
+15/15 - 1s - 39ms/step - loss: 0.7499 - val_loss: 1.7982
+Epoch 79/200
+15/15 - 1s - 45ms/step - loss: 0.7441 - val_loss: 1.7374
+Epoch 80/200
+15/15 - 1s - 36ms/step - loss: 0.7741 - val_loss: 1.8001
+Epoch 81/200
+15/15 - 1s - 37ms/step - loss: 0.7713 - val_loss: 1.7191
+Epoch 82/200
+15/15 - 1s - 36ms/step - loss: 0.8199 - val_loss: 1.8131
+Epoch 83/200
+15/15 - 1s - 37ms/step - loss: 0.8371 - val_loss: 2.1250
+Epoch 84/200
+15/15 - 1s - 36ms/step - loss: 0.8405 - val_loss: 2.4612
+Epoch 85/200
+15/15 - 1s - 40ms/step - loss: 0.8643 - val_loss: 2.0735
+Epoch 86/200
+15/15 - 1s - 43ms/step - loss: 0.8510 - val_loss: 1.7460
+Epoch 87/200
+15/15 - 1s - 43ms/step - loss: 0.7646 - val_loss: 1.7792
+Epoch 88/200
+15/15 - 1s - 36ms/step - loss: 0.7582 - val_loss: 1.7356
+Epoch 89/200
+15/15 - 1s - 46ms/step - loss: 0.7578 - val_loss: 1.7359
+Epoch 90/200
+15/15 - 1s - 37ms/step - loss: 0.8248 - val_loss: 2.0576
+Epoch 90: early stopping
+Restoring model weights from the end of the best epoch: 70.
+Epoch 1/200
+15/15 - 14s - 918ms/step - auc: 0.5742 - loss: 0.7087 - val_auc: 0.7846 - val_loss: 0.5659
+Epoch 2/200
+15/15 - 0s - 30ms/step - auc: 0.6010 - loss: 0.6809 - val_auc: 0.7826 - val_loss: 0.5534
+Epoch 3/200
+15/15 - 0s - 30ms/step - auc: 0.6947 - loss: 0.6582 - val_auc: 0.7569 - val_loss: 0.5604
+Epoch 4/200
+15/15 - 1s - 35ms/step - auc: 0.7363 - loss: 0.6110 - val_auc: 0.7530 - val_loss: 0.5358
+Epoch 5/200
+15/15 - 1s - 43ms/step - auc: 0.8131 - loss: 0.5331 - val_auc: 0.7678 - val_loss: 0.5468
+Epoch 6/200
+15/15 - 1s - 38ms/step - auc: 0.8374 - loss: 0.5106 - val_auc: 0.7836 - val_loss: 0.5299
+Epoch 7/200
+15/15 - 0s - 31ms/step - auc: 0.8815 - loss: 0.4639 - val_auc: 0.7905 - val_loss: 0.5207
+Epoch 8/200
+15/15 - 0s - 32ms/step - auc: 0.8700 - loss: 0.4549 - val_auc: 0.7994 - val_loss: 0.5276
+Epoch 9/200
+15/15 - 0s - 31ms/step - auc: 0.8685 - loss: 0.4560 - val_auc: 0.8073 - val_loss: 0.5023
+Epoch 10/200
+15/15 - 0s - 31ms/step - auc: 0.9083 - loss: 0.3975 - val_auc: 0.8132 - val_loss: 0.5049
+Epoch 11/200
+15/15 - 0s - 31ms/step - auc: 0.9199 - loss: 0.3778 - val_auc: 0.8073 - val_loss: 0.5413
+Epoch 12/200
+15/15 - 0s - 30ms/step - auc: 0.9282 - loss: 0.3526 - val_auc: 0.8083 - val_loss: 0.5384
+Epoch 13/200
+15/15 - 0s - 32ms/step - auc: 0.9382 - loss: 0.3343 - val_auc: 0.8192 - val_loss: 0.5128
+Epoch 14/200
+15/15 - 0s - 28ms/step - auc: 0.9368 - loss: 0.3288 - val_auc: 0.8093 - val_loss: 0.5568
+Epoch 15/200
+15/15 - 1s - 40ms/step - auc: 0.9709 - loss: 0.2589 - val_auc: 0.7984 - val_loss: 0.6348
+Epoch 16/200
+15/15 - 0s - 30ms/step - auc: 0.9599 - loss: 0.2878 - val_auc: 0.8132 - val_loss: 0.5065
+Epoch 17/200
+15/15 - 0s - 29ms/step - auc: 0.9660 - loss: 0.2527 - val_auc: 0.8310 - val_loss: 0.4957
+Epoch 18/200
+15/15 - 0s - 28ms/step - auc: 0.9804 - loss: 0.2183 - val_auc: 0.8310 - val_loss: 0.4989
+Epoch 19/200
+15/15 - 0s - 30ms/step - auc: 0.9805 - loss: 0.2048 - val_auc: 0.8231 - val_loss: 0.4862
+Epoch 20/200
+15/15 - 0s - 31ms/step - auc: 0.9811 - loss: 0.1924 - val_auc: 0.8340 - val_loss: 0.4926
+Epoch 21/200
+15/15 - 1s - 34ms/step - auc: 0.9923 - loss: 0.1666 - val_auc: 0.8241 - val_loss: 0.4983
+Epoch 22/200
+15/15 - 0s - 30ms/step - auc: 0.9914 - loss: 0.1480 - val_auc: 0.8162 - val_loss: 0.5487
+Epoch 23/200
+15/15 - 1s - 49ms/step - auc: 0.9845 - loss: 0.1591 - val_auc: 0.8162 - val_loss: 0.4907
+Epoch 24/200
+15/15 - 0s - 28ms/step - auc: 0.9924 - loss: 0.1428 - val_auc: 0.8231 - val_loss: 0.5374
+Epoch 25/200
+15/15 - 0s - 31ms/step - auc: 0.9948 - loss: 0.1272 - val_auc: 0.8202 - val_loss: 0.4883
+Epoch 26/200
+15/15 - 1s - 35ms/step - auc: 0.9940 - loss: 0.1131 - val_auc: 0.8172 - val_loss: 0.5217
+Epoch 27/200
+15/15 - 0s - 29ms/step - auc: 0.9982 - loss: 0.0863 - val_auc: 0.8261 - val_loss: 0.5304
+Epoch 28/200
+15/15 - 1s - 39ms/step - auc: 0.9981 - loss: 0.0948 - val_auc: 0.8379 - val_loss: 0.5070
+Epoch 29/200
+15/15 - 0s - 31ms/step - auc: 0.9986 - loss: 0.0768 - val_auc: 0.8271 - val_loss: 0.5838
+Epoch 30/200
+15/15 - 1s - 34ms/step - auc: 0.9960 - loss: 0.0792 - val_auc: 0.8340 - val_loss: 0.5114
+Epoch 31/200
+15/15 - 0s - 30ms/step - auc: 0.9999 - loss: 0.0595 - val_auc: 0.8370 - val_loss: 0.4523
+Epoch 32/200
+15/15 - 0s - 32ms/step - auc: 0.9996 - loss: 0.0558 - val_auc: 0.8350 - val_loss: 0.4754
+Epoch 33/200
+15/15 - 1s - 37ms/step - auc: 1.0000 - loss: 0.0444 - val_auc: 0.8439 - val_loss: 0.4746
+Epoch 34/200
+15/15 - 0s - 29ms/step - auc: 1.0000 - loss: 0.0342 - val_auc: 0.8389 - val_loss: 0.4967
+Epoch 35/200
+15/15 - 0s - 31ms/step - auc: 1.0000 - loss: 0.0317 - val_auc: 0.8409 - val_loss: 0.4751
+Epoch 36/200
+15/15 - 0s - 29ms/step - auc: 0.9986 - loss: 0.0501 - val_auc: 0.8192 - val_loss: 0.4669
+Epoch 37/200
+15/15 - 1s - 40ms/step - auc: 1.0000 - loss: 0.0501 - val_auc: 0.8340 - val_loss: 0.5550
+Epoch 38/200
+15/15 - 0s - 31ms/step - auc: 1.0000 - loss: 0.0338 - val_auc: 0.8192 - val_loss: 0.6105
+Epoch 39/200
+15/15 - 1s - 34ms/step - auc: 1.0000 - loss: 0.0253 - val_auc: 0.8281 - val_loss: 0.5070
+Epoch 40/200
+15/15 - 0s - 31ms/step - auc: 0.9998 - loss: 0.0375 - val_auc: 0.8291 - val_loss: 0.5091
+Epoch 41/200
+15/15 - 0s - 32ms/step - auc: 1.0000 - loss: 0.0243 - val_auc: 0.8330 - val_loss: 0.6080
+Epoch 42/200
+15/15 - 0s - 31ms/step - auc: 0.9998 - loss: 0.0326 - val_auc: 0.8261 - val_loss: 0.7333
+Epoch 43/200
+15/15 - 0s - 30ms/step - auc: 1.0000 - loss: 0.0201 - val_auc: 0.8271 - val_loss: 0.5035
+Epoch 44/200
+15/15 - 0s - 33ms/step - auc: 0.9997 - loss: 0.0228 - val_auc: 0.8320 - val_loss: 0.5032
+Epoch 45/200
+15/15 - 1s - 38ms/step - auc: 1.0000 - loss: 0.0224 - val_auc: 0.8300 - val_loss: 0.5267
+Epoch 46/200
+15/15 - 1s - 48ms/step - auc: 1.0000 - loss: 0.0149 - val_auc: 0.8458 - val_loss: 0.5745
+Epoch 47/200
+15/15 - 1s - 34ms/step - auc: 1.0000 - loss: 0.0131 - val_auc: 0.8261 - val_loss: 0.5526
+Epoch 48/200
+15/15 - 1s - 45ms/step - auc: 1.0000 - loss: 0.0147 - val_auc: 0.8310 - val_loss: 0.5333
+Epoch 49/200
+15/15 - 1s - 47ms/step - auc: 1.0000 - loss: 0.0094 - val_auc: 0.8370 - val_loss: 0.5246
+Epoch 50/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0188 - val_auc: 0.8261 - val_loss: 0.5628
+Epoch 51/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0131 - val_auc: 0.8231 - val_loss: 0.5758
+Epoch 52/200
+15/15 - 1s - 53ms/step - auc: 1.0000 - loss: 0.0065 - val_auc: 0.8251 - val_loss: 0.5729
+Epoch 53/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0100 - val_auc: 0.8360 - val_loss: 0.5418
+Epoch 54/200
+15/15 - 1s - 43ms/step - auc: 1.0000 - loss: 0.0102 - val_auc: 0.8291 - val_loss: 0.5672
+Epoch 55/200
+15/15 - 1s - 43ms/step - auc: 1.0000 - loss: 0.0156 - val_auc: 0.8123 - val_loss: 1.2672
+Epoch 56/200
+15/15 - 1s - 49ms/step - auc: 0.9999 - loss: 0.0159 - val_auc: 0.8340 - val_loss: 0.5540
+Epoch 57/200
+15/15 - 1s - 48ms/step - auc: 1.0000 - loss: 0.0151 - val_auc: 0.8449 - val_loss: 0.6510
+Epoch 58/200
+15/15 - 1s - 80ms/step - auc: 1.0000 - loss: 0.0127 - val_auc: 0.8370 - val_loss: 0.5712
+Epoch 59/200
+15/15 - 1s - 65ms/step - auc: 1.0000 - loss: 0.0111 - val_auc: 0.8419 - val_loss: 0.5612
+Epoch 60/200
+15/15 - 1s - 57ms/step - auc: 1.0000 - loss: 0.0077 - val_auc: 0.8340 - val_loss: 0.5430
+Epoch 61/200
+15/15 - 1s - 51ms/step - auc: 1.0000 - loss: 0.0098 - val_auc: 0.8379 - val_loss: 0.5659
+Epoch 62/200
+15/15 - 1s - 49ms/step - auc: 1.0000 - loss: 0.0045 - val_auc: 0.8291 - val_loss: 0.6266
+Epoch 63/200
+15/15 - 1s - 59ms/step - auc: 1.0000 - loss: 0.0076 - val_auc: 0.8300 - val_loss: 0.6859
+Epoch 64/200
+15/15 - 1s - 35ms/step - auc: 1.0000 - loss: 0.0044 - val_auc: 0.8281 - val_loss: 0.7243
+Epoch 65/200
+15/15 - 1s - 38ms/step - auc: 1.0000 - loss: 0.0031 - val_auc: 0.8261 - val_loss: 0.7007
+Epoch 66/200
+15/15 - 1s - 38ms/step - auc: 1.0000 - loss: 0.0044 - val_auc: 0.8379 - val_loss: 0.6182
+Epoch 66: early stopping
+Restoring model weights from the end of the best epoch: 46.
+Transfer Learning (In-domain DAE to Classifier) | AUC=0.7672 | F1=0.6923 | Sensitivity=0.6429 | False Negatives=5
+Prediction CSV: /IDSC2026/outputs/predict/Transfer Learning (In domain DAE to Classifier) Predictions.csv
+
+Training VICReg (Self-supervised) ...
+VICReg pretrain epoch 01 | loss=27.7580 | val_loss=12.9297
+VICReg pretrain epoch 02 | loss=11.1614 | val_loss=13.5390
+VICReg pretrain epoch 03 | loss=9.7230 | val_loss=9.7753
+VICReg pretrain epoch 04 | loss=6.3744 | val_loss=10.5405
+VICReg pretrain epoch 05 | loss=6.1403 | val_loss=10.3486
+VICReg pretrain epoch 06 | loss=5.2194 | val_loss=8.5823
+VICReg pretrain epoch 07 | loss=6.3649 | val_loss=9.7017
+VICReg pretrain epoch 08 | loss=5.5013 | val_loss=6.9862
+VICReg pretrain epoch 09 | loss=5.1932 | val_loss=8.7195
+VICReg pretrain epoch 10 | loss=5.5285 | val_loss=7.4152
+VICReg pretrain epoch 11 | loss=5.0836 | val_loss=6.1627
+VICReg pretrain epoch 12 | loss=4.8572 | val_loss=6.5987
+VICReg pretrain epoch 13 | loss=4.2837 | val_loss=6.8574
+VICReg pretrain epoch 14 | loss=4.6373 | val_loss=5.7507
+VICReg pretrain epoch 15 | loss=4.1642 | val_loss=6.7905
+VICReg pretrain epoch 16 | loss=3.6641 | val_loss=6.4141
+VICReg pretrain epoch 17 | loss=5.2020 | val_loss=6.2254
+VICReg pretrain epoch 18 | loss=4.3840 | val_loss=6.5002
+VICReg pretrain epoch 19 | loss=3.5034 | val_loss=6.0547
+VICReg pretrain epoch 20 | loss=3.3641 | val_loss=6.8493
+VICReg pretrain epoch 21 | loss=3.6916 | val_loss=5.3491
+VICReg pretrain epoch 22 | loss=4.1259 | val_loss=6.1016
+VICReg pretrain epoch 23 | loss=4.5841 | val_loss=8.4639
+VICReg pretrain epoch 24 | loss=3.8070 | val_loss=8.7284
+VICReg pretrain epoch 25 | loss=3.9800 | val_loss=8.2167
+VICReg pretrain epoch 26 | loss=3.4419 | val_loss=8.7735
+VICReg pretrain epoch 27 | loss=3.9387 | val_loss=8.7907
+VICReg pretrain epoch 28 | loss=4.1693 | val_loss=7.8581
+VICReg pretrain epoch 29 | loss=3.1725 | val_loss=6.9612
+VICReg pretrain epoch 30 | loss=3.4556 | val_loss=6.9170
+VICReg pretrain epoch 31 | loss=4.2474 | val_loss=5.3482
+VICReg pretrain epoch 32 | loss=3.1733 | val_loss=4.9762
+VICReg pretrain epoch 33 | loss=3.3218 | val_loss=5.2607
+VICReg pretrain epoch 34 | loss=3.7015 | val_loss=5.2690
+VICReg pretrain epoch 35 | loss=4.2452 | val_loss=6.0811
+VICReg pretrain epoch 36 | loss=3.7164 | val_loss=4.3875
+VICReg pretrain epoch 37 | loss=4.5782 | val_loss=4.8484
+VICReg pretrain epoch 38 | loss=3.3909 | val_loss=6.3107
+VICReg pretrain epoch 39 | loss=3.1059 | val_loss=5.0062
+VICReg pretrain epoch 40 | loss=3.2186 | val_loss=5.8960
+VICReg pretrain epoch 41 | loss=3.1143 | val_loss=6.2050
+VICReg pretrain epoch 42 | loss=3.0894 | val_loss=5.4451
+VICReg pretrain epoch 43 | loss=3.2124 | val_loss=4.5547
+VICReg pretrain epoch 44 | loss=2.9882 | val_loss=5.2412
+VICReg pretrain epoch 45 | loss=3.6138 | val_loss=5.3593
+VICReg pretrain epoch 46 | loss=2.8540 | val_loss=4.4883
+VICReg pretrain epoch 47 | loss=3.0229 | val_loss=5.1416
+VICReg pretrain epoch 48 | loss=3.1549 | val_loss=5.3459
+VICReg pretrain epoch 49 | loss=3.0241 | val_loss=4.8661
+VICReg pretrain epoch 50 | loss=2.8636 | val_loss=5.0728
+VICReg pretrain epoch 51 | loss=3.6848 | val_loss=5.3014
+VICReg pretraining early stop.
+Epoch 1/200
+15/15 - 14s - 963ms/step - auc: 0.4424 - loss: 0.8022 - val_auc: 0.4061 - val_loss: 0.6725
+Epoch 2/200
+15/15 - 0s - 32ms/step - auc: 0.5952 - loss: 0.6916 - val_auc: 0.4160 - val_loss: 0.6513
+Epoch 3/200
+15/15 - 0s - 31ms/step - auc: 0.6492 - loss: 0.6635 - val_auc: 0.4229 - val_loss: 0.6332
+Epoch 4/200
+15/15 - 0s - 31ms/step - auc: 0.6487 - loss: 0.6610 - val_auc: 0.4358 - val_loss: 0.6129
+Epoch 5/200
+15/15 - 1s - 38ms/step - auc: 0.7298 - loss: 0.6112 - val_auc: 0.4763 - val_loss: 0.6117
+Epoch 6/200
+15/15 - 0s - 32ms/step - auc: 0.7339 - loss: 0.5878 - val_auc: 0.5237 - val_loss: 0.5951
+Epoch 7/200
+15/15 - 1s - 34ms/step - auc: 0.7668 - loss: 0.5510 - val_auc: 0.5455 - val_loss: 0.5903
+Epoch 8/200
+15/15 - 1s - 39ms/step - auc: 0.8251 - loss: 0.4961 - val_auc: 0.5781 - val_loss: 0.5811
+Epoch 9/200
+15/15 - 1s - 36ms/step - auc: 0.8771 - loss: 0.4473 - val_auc: 0.5949 - val_loss: 0.5960
+Epoch 10/200
+15/15 - 0s - 31ms/step - auc: 0.9145 - loss: 0.4214 - val_auc: 0.6126 - val_loss: 0.6182
+Epoch 11/200
+15/15 - 0s - 32ms/step - auc: 0.9298 - loss: 0.3564 - val_auc: 0.6324 - val_loss: 0.6357
+Epoch 12/200
+15/15 - 1s - 39ms/step - auc: 0.9369 - loss: 0.3282 - val_auc: 0.6482 - val_loss: 0.6080
+Epoch 13/200
+15/15 - 0s - 33ms/step - auc: 0.9673 - loss: 0.2656 - val_auc: 0.6709 - val_loss: 0.5728
+Epoch 14/200
+15/15 - 1s - 36ms/step - auc: 0.9715 - loss: 0.2379 - val_auc: 0.6907 - val_loss: 0.5586
+Epoch 15/200
+15/15 - 0s - 31ms/step - auc: 0.9778 - loss: 0.2069 - val_auc: 0.6947 - val_loss: 0.5636
+Epoch 16/200
+15/15 - 0s - 29ms/step - auc: 0.9844 - loss: 0.1750 - val_auc: 0.6907 - val_loss: 0.6897
+Epoch 17/200
+15/15 - 0s - 31ms/step - auc: 0.9847 - loss: 0.1781 - val_auc: 0.7105 - val_loss: 0.6148
+Epoch 18/200
+15/15 - 1s - 39ms/step - auc: 0.9958 - loss: 0.1089 - val_auc: 0.7302 - val_loss: 0.6486
+Epoch 19/200
+15/15 - 0s - 32ms/step - auc: 0.9964 - loss: 0.0863 - val_auc: 0.7480 - val_loss: 0.6108
+Epoch 20/200
+15/15 - 0s - 31ms/step - auc: 0.9973 - loss: 0.0699 - val_auc: 0.7312 - val_loss: 0.7974
+Epoch 21/200
+15/15 - 0s - 29ms/step - auc: 0.9991 - loss: 0.0493 - val_auc: 0.7480 - val_loss: 0.6745
+Epoch 22/200
+15/15 - 0s - 32ms/step - auc: 1.0000 - loss: 0.0327 - val_auc: 0.7460 - val_loss: 0.6329
+Epoch 23/200
+15/15 - 1s - 35ms/step - auc: 0.9996 - loss: 0.0304 - val_auc: 0.7075 - val_loss: 0.6852
+Epoch 24/200
+15/15 - 0s - 31ms/step - auc: 1.0000 - loss: 0.0195 - val_auc: 0.7194 - val_loss: 0.7131
+Epoch 25/200
+15/15 - 1s - 38ms/step - auc: 0.9978 - loss: 0.0624 - val_auc: 0.7263 - val_loss: 0.7351
+Epoch 26/200
+15/15 - 0s - 30ms/step - auc: 0.9998 - loss: 0.0312 - val_auc: 0.7263 - val_loss: 0.7724
+Epoch 27/200
+15/15 - 1s - 35ms/step - auc: 1.0000 - loss: 0.0191 - val_auc: 0.7283 - val_loss: 0.8177
+Epoch 28/200
+15/15 - 1s - 34ms/step - auc: 1.0000 - loss: 0.0139 - val_auc: 0.7322 - val_loss: 0.8104
+Epoch 29/200
+15/15 - 1s - 42ms/step - auc: 1.0000 - loss: 0.0107 - val_auc: 0.7411 - val_loss: 0.7772
+Epoch 30/200
+15/15 - 0s - 31ms/step - auc: 1.0000 - loss: 0.0121 - val_auc: 0.7589 - val_loss: 0.9997
+Epoch 31/200
+15/15 - 0s - 31ms/step - auc: 1.0000 - loss: 0.0088 - val_auc: 0.7372 - val_loss: 0.9555
+Epoch 32/200
+15/15 - 1s - 39ms/step - auc: 1.0000 - loss: 0.0070 - val_auc: 0.6877 - val_loss: 0.9203
+Epoch 33/200
+15/15 - 0s - 29ms/step - auc: 1.0000 - loss: 0.0066 - val_auc: 0.6957 - val_loss: 0.9282
+Epoch 34/200
+15/15 - 0s - 29ms/step - auc: 1.0000 - loss: 0.0122 - val_auc: 0.7223 - val_loss: 0.9558
+Epoch 35/200
+15/15 - 0s - 29ms/step - auc: 1.0000 - loss: 0.0165 - val_auc: 0.7026 - val_loss: 0.9226
+Epoch 36/200
+15/15 - 1s - 41ms/step - auc: 0.9968 - loss: 0.0322 - val_auc: 0.6828 - val_loss: 0.8085
+Epoch 37/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0119 - val_auc: 0.7174 - val_loss: 0.8320
+Epoch 38/200
+15/15 - 0s - 28ms/step - auc: 1.0000 - loss: 0.0105 - val_auc: 0.6828 - val_loss: 1.1560
+Epoch 39/200
+15/15 - 1s - 41ms/step - auc: 0.9999 - loss: 0.0192 - val_auc: 0.7085 - val_loss: 1.1813
+Epoch 40/200
+15/15 - 0s - 31ms/step - auc: 1.0000 - loss: 0.0073 - val_auc: 0.7125 - val_loss: 1.2345
+Epoch 41/200
+15/15 - 0s - 30ms/step - auc: 1.0000 - loss: 0.0041 - val_auc: 0.7065 - val_loss: 1.2507
+Epoch 42/200
+15/15 - 0s - 30ms/step - auc: 1.0000 - loss: 0.0034 - val_auc: 0.6808 - val_loss: 1.1920
+Epoch 43/200
+15/15 - 0s - 29ms/step - auc: 1.0000 - loss: 0.0042 - val_auc: 0.6601 - val_loss: 1.1290
+Epoch 44/200
+15/15 - 0s - 33ms/step - auc: 1.0000 - loss: 0.0030 - val_auc: 0.6621 - val_loss: 1.1099
+Epoch 45/200
+15/15 - 1s - 38ms/step - auc: 1.0000 - loss: 0.0016 - val_auc: 0.6581 - val_loss: 1.1287
+Epoch 46/200
+15/15 - 0s - 30ms/step - auc: 1.0000 - loss: 0.0027 - val_auc: 0.6670 - val_loss: 1.1187
+Epoch 47/200
+15/15 - 1s - 41ms/step - auc: 1.0000 - loss: 0.0022 - val_auc: 0.6630 - val_loss: 1.1487
+Epoch 48/200
+15/15 - 1s - 43ms/step - auc: 1.0000 - loss: 0.0018 - val_auc: 0.6670 - val_loss: 1.1437
+Epoch 49/200
+15/15 - 1s - 62ms/step - auc: 1.0000 - loss: 0.0024 - val_auc: 0.6719 - val_loss: 1.1336
+Epoch 50/200
+15/15 - 1s - 46ms/step - auc: 1.0000 - loss: 0.0018 - val_auc: 0.6719 - val_loss: 1.1351
+Epoch 50: early stopping
+Restoring model weights from the end of the best epoch: 30.
+VICReg (Self-supervised) | AUC=0.7241 | F1=0.5926 | Sensitivity=0.5714 | False Negatives=6
+Prediction CSV: /IDSC2026/outputs/predict/VICReg (Self supervised) Predictions.csv
+
+Training Echo State Network (ESN) ...
+Echo State Network (ESN) | AUC=0.7771 | F1=0.4706 | Sensitivity=0.5714 | False Negatives=6
+Prediction CSV: /IDSC2026/outputs/predict/Echo State Network (ESN) Predictions.csv
+
+Total evaluated models: 11
+
+================================================================================
+Running pipeline/validation.py
+================================================================================
+Saved leaderboard summary: /IDSC2026/outputs/Summary.csv
+Saved safety-oriented clinical summary: /IDSC2026/outputs/Clinical Summary.csv
+Saved class count summary: /IDSC2026/outputs/predict/Model Count Comparison.csv
+Saved failure summary: /IDSC2026/outputs/predict/Failed Models.csv
+Leaderboard priority: PR AUC -> F1 -> Sensitivity -> Correct Brugada -> Balanced Accuracy -> AUC -> Specificity -> Accuracy -> Correctly Predicted
+Clinical priority: Sensitivity -> Correct Brugada -> False Negatives -> PR AUC -> F1 -> Balanced Accuracy -> Specificity -> AUC -> Accuracy
+Successful models: 11
+Failed models: 0
+    Rank  ... Pretrain Epochs
+0      1  ...            90.0
+1      2  ...             NaN
+2      3  ...             NaN
+3      4  ...             NaN
+4      5  ...            51.0
+5      6  ...             NaN
+6      7  ...             NaN
+7      8  ...             NaN
+8      9  ...             NaN
+9     10  ...             NaN
+10    11  ...             NaN
+
+[11 rows x 26 columns]
+    Clinical Rank  ... Pretrain Epochs
+0               1  ...            90.0
+1               2  ...             NaN
+2               3  ...             NaN
+3               4  ...            51.0
+4               5  ...             NaN
+5               6  ...             NaN
+6               7  ...             NaN
+7               8  ...             NaN
+8               9  ...             NaN
+9              10  ...             NaN
+10             11  ...             NaN
+
+[11 rows x 26 columns]
+                                              Model  ... Precision on Predicted Class
+0                                  XGBoost Features  ...                     0.894737
+1                                  XGBoost Features  ...                     0.533333
+2                                  XGBoost Features  ...                          NaN
+3                            Random Forest Features  ...                     0.859375
+4                            Random Forest Features  ...                     0.625000
+5                            Random Forest Features  ...                          NaN
+6                                  SVM RBF Features  ...                     0.822581
+7                                  SVM RBF Features  ...                     0.300000
+8                                  SVM RBF Features  ...                          NaN
+9                                          AdaBoost  ...                     0.820896
+10                                         AdaBoost  ...                     0.400000
+11                                         AdaBoost  ...                          NaN
+12                               1D CNN Median Beat  ...                     0.870968
+13                               1D CNN Median Beat  ...                     0.600000
+14                               1D CNN Median Beat  ...                          NaN
+15                            ResNet 1D Median Beat  ...                     0.852459
+16                            ResNet 1D Median Beat  ...                     0.454545
+17                            ResNet 1D Median Beat  ...                          NaN
+18                          CNN + BiGRU Median Beat  ...                     0.879310
+19                          CNN + BiGRU Median Beat  ...                     0.500000
+20                          CNN + BiGRU Median Beat  ...                          NaN
+21                  Transformer Encoder Median Beat  ...                     0.888889
+22                  Transformer Encoder Median Beat  ...                     0.444444
+23                  Transformer Encoder Median Beat  ...                          NaN
+24  Transfer Learning (In-domain DAE to Classifier)  ...                     0.916667
+25  Transfer Learning (In-domain DAE to Classifier)  ...                     0.750000
+26  Transfer Learning (In-domain DAE to Classifier)  ...                          NaN
+27                         VICReg (Self-supervised)  ...                     0.898305
+28                         VICReg (Self-supervised)  ...                     0.615385
+29                         VICReg (Self-supervised)  ...                          NaN
+30                         Echo State Network (ESN)  ...                     0.884615
+31                         Echo State Network (ESN)  ...                     0.400000
+32                         Echo State Network (ESN)  ...                          NaN
+
+[33 rows x 7 columns]
+Empty DataFrame
+Columns: []
+Index: []
+Saved plot: /IDSC2026/outputs/plots/Validation Correct Predictions By Model.png
+Saved plot: /IDSC2026/outputs/plots/Validation Metric Heatmap.png
+Saved plot: /IDSC2026/outputs/plots/Validation ROC Curve Comparison.png
+Saved plot: /IDSC2026/outputs/plots/Validation PR Curve Comparison.png
+Saved plot: /IDSC2026/outputs/plots/Validation Correct Predictions Per Class.png
+Saved plot: /IDSC2026/outputs/plots/Validation Clinical Candidate Confusion Matrix.png
+Saved plot: /IDSC2026/outputs/plots/Validation Training AUC History.png
+                      Selection Track  ... Correct Brugada
+0                  Leaderboard winner  ...               9
+1  Safety-oriented clinical candidate  ...               9
+
+[2 rows x 7 columns]
+    patient_id  target  pred_proba  pred_label
+0       952177       0    0.219251           0
+1      3080186       1    0.003227           0
+2      1254062       0    0.000337           0
+3      1294540       0    0.001697           0
+4      1214441       0    0.000227           0
+5       822756       0    0.000657           0
+6      1286512       0    0.002727           0
+7      1096625       0    0.006803           0
+8      3062045       0    0.000440           0
+9       898726       1    0.443648           1
+10     1342979       0    0.001710           0
+11     1422770       0    0.000560           0
+12     3045059       0    0.010953           0
+13     1009874       0    0.138404           0
+14      622530       0    0.870712           1
+15     3099875       0    0.000414           0
+16      509648       1    0.770501           1
+17     1318568       0    0.003070           0
+18      482516       1    0.698390           1
+19      519139       0    0.001758           0
+                                              Model  ... Precision on Predicted Class
+24  Transfer Learning (In-domain DAE to Classifier)  ...                     0.916667
+25  Transfer Learning (In-domain DAE to Classifier)  ...                     0.750000
+26  Transfer Learning (In-domain DAE to Classifier)  ...                          NaN
+
+[3 rows x 7 columns]
+Shortcut-risk metadata columns: ['basal_pattern_meta', 'sudden_death_meta']
+Saved metadata ablation summary: /IDSC2026/outputs/predict/Metadata Ablation Summary.csv
+Saved metadata ablation comparison: /IDSC2026/outputs/predict/Metadata Ablation Comparison.csv
+   Threshold       AUC  ...              Feature Set  Validation F1
+0   0.325552  0.783251  ...  ECG + metadata ablation       0.666667
+1   0.334063  0.719212  ...  ECG + metadata ablation       0.666667
+2   0.575928  0.655172  ...  ECG + metadata ablation       0.705882
+3   0.269037  0.757389  ...  ECG + metadata ablation       0.714286
+
+[4 rows x 21 columns]
+                    Model  ...  Delta Correct Brugada
+0        XGBoost Features  ...                     -3
+1  Random Forest Features  ...                      1
+2                AdaBoost  ...                      0
+3        SVM RBF Features  ...                      4
+
+[4 rows x 18 columns]
+Saved plot: /IDSC2026/outputs/plots/Validation Metadata Ablation Delta.png
+Deep end-to-end and transfer models are not included in this repeated split check to keep runtime manageable. The stability analysis therefore focuses on interpretable or fast ECG-only finalists.
+Stability candidates: ['Echo State Network (ESN)', 'XGBoost Features', 'Random Forest Features']
+Saved repeated split detail file: /IDSC2026/outputs/predict/Stability Repeated Split Details.csv
+Saved repeated split summary file: /IDSC2026/outputs/predict/Stability Repeated Split Summary.csv
+                      Model  ...  False Negatives std
+0  Echo State Network (ESN)  ...             2.732520
+2          XGBoost Features  ...             1.602082
+1    Random Forest Features  ...             3.141125
+
+[3 rows x 15 columns]
+Saved plot: /IDSC2026/outputs/plots/Validation Repeated Split Sensitivity Boxplot.png
+Balanced composite weights: performance 0.40, safety 0.35, consistency 0.15, efficiency 0.05, stability 0.05.
+Saved multi-aspect ranking: /IDSC2026/outputs/Multi Aspect Ranking.csv
+Saved Pareto-front model list: /IDSC2026/outputs/Pareto Front Models.csv
+    Balanced Rank  ...        Stability Evidence
+0               1  ...     Not run; neutral fill
+1               2  ...  Repeated split available
+2               3  ...     Not run; neutral fill
+3               4  ...  Repeated split available
+4               5  ...     Not run; neutral fill
+5               6  ...     Not run; neutral fill
+6               7  ...     Not run; neutral fill
+7               8  ...  Repeated split available
+8               9  ...     Not run; neutral fill
+9              10  ...     Not run; neutral fill
+10             11  ...     Not run; neutral fill
+
+[11 rows x 10 columns]
+Feature interpretability model: XGBoost Features
+Saved permutation importance: /IDSC2026/outputs/predict/Feature Permutation Importance.csv
+Saved lead-group importance: /IDSC2026/outputs/predict/Feature Permutation Importance By Lead.csv
+                 Feature  Importance Mean  Importance Std Lead Group
+242       aVL_beat_r_amp         0.032618        0.016214        aVL
+352  V2_minus_V3_st_mean         0.023531        0.014414         V2
+112    V1_strip_kurtosis         0.021055        0.015395         V1
+257   aVF_beat_qrs_range         0.018049        0.015753        aVF
+117         V2_strip_max         0.017474        0.013408         V2
+161  V4_strip_zero_cross         0.017058        0.018705         V4
+121         V2_strip_q25         0.015067        0.013108         V2
+88         aVF_strip_q05         0.014902        0.008015        aVF
+222     III_beat_st_mean         0.013461        0.005710          I
+111        V1_strip_skew         0.013114        0.006306         V1
+102         V1_strip_ptp         0.013001        0.005250         V1
+21          II_strip_max         0.011509        0.015233          I
+279        V2_beat_q_min         0.011451        0.010333         V2
+246     aVL_beat_st_mean         0.011326        0.005483        aVL
+266        V1_beat_r_amp         0.010990        0.003466         V1
+             Lead Group  Importance Mean
+2                    V2         0.112222
+1                    V1         0.088148
+7                   aVF         0.070197
+9                   aVR         0.046765
+0                     I         0.036239
+4                    V4         0.018237
+3                    V3         0.013556
+6                    V6         0.011897
+10  cross-lead / global         0.009121
+5                    V5        -0.004600
+8                   aVL        -0.014136
+Saved plot: /IDSC2026/outputs/plots/Interpretability Feature Permutation Importance.png
+Saved plot: /IDSC2026/outputs/plots/Interpretability Feature Importance By Lead.png
+Sequence saliency model: Transfer Learning (In-domain DAE to Classifier)
+Saliency patients: [3009950, 855592, 952641, 1141322, 816929]
+Saved sequence lead saliency: /IDSC2026/outputs/predict/Sequence Lead Saliency.csv
+   Lead  Saliency
+6    V1  0.001776
+5   aVF  0.001673
+4   aVL  0.001658
+7    V2  0.001599
+11   V6  0.001563
+9    V4  0.001518
+3   aVR  0.001488
+8    V3  0.001486
+1    II  0.001380
+10   V5  0.001363
+2   III  0.001237
+0     I  0.001220
+Saved plot: /IDSC2026/outputs/plots/Interpretability Sequence Lead Saliency.png
+Saved plot: /IDSC2026/outputs/plots/Interpretability Sequence V1 V3 Saliency Heatmap.png
+Saved plot: /IDSC2026/outputs/plots/Failure Analysis Clinical Candidate Threshold Tradeoff.png
+Saved threshold scan: /IDSC2026/outputs/predict/Clinical Candidate Threshold Scan.csv
+Saved failure overview: /IDSC2026/outputs/predict/Clinical Candidate Failure Overview.csv
+Saved false negative table: /IDSC2026/outputs/predict/Clinical Candidate False Negatives.csv
+    patient_id  target  pred_proba  ...  basal_pattern  sudden_death    Outcome Type
+68      319150       1    0.000004  ...              0             0  False Negative
+37     1370418       1    0.000157  ...              0             0  False Negative
+1      3080186       1    0.003227  ...              0             0  False Negative
+46     1207947       1    0.004168  ...              0             0  False Negative
+69     3043155       1    0.010228  ...              0             0  False Negative
+
+[5 rows x 7 columns]
+Saved plot: /IDSC2026/outputs/plots/Failure Analysis Basal Pattern Vs Outcome.png
+Saved plot: /IDSC2026/outputs/plots/Failure False Negative Patient 319150 V1 V3.png
+Saved plot: /IDSC2026/outputs/plots/Failure False Negative Patient 1370418 V1 V3.png
+
+================================================================================
+Running pipeline/summary.py
+================================================================================
+Primary benchmark note:
+ECG-only is the main benchmark. Shortcut-risk metadata columns are excluded from model training and reported only as a separate ablation.
+
+Leaderboard winner:
+Transfer Learning (In-domain DAE to Classifier) | PR-AUC=0.6765 | F1=0.6923 | Sensitivity=0.6429 | False Negatives=5
+
+Safety-oriented clinical candidate:
+Transfer Learning (In-domain DAE to Classifier) | Sensitivity=0.6429 | False Negatives=5 | PR-AUC=0.6765 | F1=0.6923
+
+Decision note:
+The same model leads both the leaderboard and the safety-oriented ranking on this split.
+
+Metadata ablation note:
+Feature-model results with ECG + metadata are saved separately so any apparent gain from shortcut-risk metadata can be discussed transparently instead of being mixed into the main benchmark.
+
+Repeated split stability highlight:
+Echo State Network (ESN) | mean sensitivity=0.6190 +/- 0.1952 | mean PR-AUC=0.5354
+This repeated split analysis improves validation rigor, but it does not fully remove the optimism risk introduced by comparing many models against one held-out test split.
+
+Balanced multi-aspect candidate:
+Transfer Learning (In-domain DAE to Classifier) | composite=0.7201 | performance=0.7110 | safety=0.7559 | pareto=yes
+This ranking blends aggregate discrimination, clinical safety, validation consistency, training efficiency, and available repeated-split stability evidence.
+
+Best Models.txt written to: /IDSC2026/outputs/Best Models.txt
+
+Responsible deployment note:
+These results are research-only. Because the dataset is small, imbalanced, single-center, and evaluated in a multi-model selection setting, any deployment claim would require external validation, prospective threshold calibration, and a workflow that treats the model as decision support rather than autonomous diagnosis.
+
+Saved outputs:
+Summary.csv: /IDSC2026/outputs/Summary.csv
+Clinical Summary.csv: /IDSC2026/outputs/Clinical Summary.csv
+Multi Aspect Ranking.csv: /IDSC2026/outputs/Multi Aspect Ranking.csv
+Pareto Front Models.csv: /IDSC2026/outputs/Pareto Front Models.csv
+Best Models.txt: /IDSC2026/outputs/Best Models.txt
+Shared Patient Split.csv: /IDSC2026/outputs/predict/Shared Patient Split.csv
+Feature Set Audit.csv: /IDSC2026/outputs/predict/Feature Set Audit.csv
+Metadata Ablation Summary.csv: /IDSC2026/outputs/predict/Metadata Ablation Summary.csv
+Stability Repeated Split Summary.csv: /IDSC2026/outputs/predict/Stability Repeated Split Summary.csv
+prediction folder: /IDSC2026/outputs/predict
+plots folder: /IDSC2026/outputs/plots
+Logs.txt: /IDSC2026/outputs/Logs.txt
+
+Log file content:
+    Rank  ... Pretrain Epochs
+0      1  ...            90.0
+1      2  ...             NaN
+2      3  ...             NaN
+3      4  ...             NaN
+4      5  ...            51.0
+5      6  ...             NaN
+6      7  ...             NaN
+7      8  ...             NaN
+8      9  ...             NaN
+9     10  ...             NaN
+10    11  ...             NaN
+
+[11 rows x 26 columns]
+    Clinical Rank  ... Pretrain Epochs
+0               1  ...            90.0
+1               2  ...             NaN
+2               3  ...             NaN
+3               4  ...            51.0
+4               5  ...             NaN
+5               6  ...             NaN
+6               7  ...             NaN
+7               8  ...             NaN
+8               9  ...             NaN
+9              10  ...             NaN
+10             11  ...             NaN
+
+[11 rows x 26 columns]

@@ -1,0 +1,3 @@
+Feature Set,Feature Count,Shortcut-risk columns included,Excluded columns
+ECG-only primary benchmark,357,No,"basal_pattern_meta, sudden_death_meta"
+ECG + metadata ablation,359,Yes,"patient_id, target"

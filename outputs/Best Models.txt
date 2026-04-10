@@ -1,0 +1,15 @@
+Best Models
+
+Final recommendation: Transfer Learning (In-domain DAE to Classifier)
+
+Why this model:
+- Selected from the balanced multi-aspect ranking.
+- PR-AUC: 0.6765
+- F1: 0.6923
+- Sensitivity: 0.6429
+- Specificity: 0.9483
+- False Negatives: 5
+- False Positives: 3
+
+Conclusion:
+If only one model should be used for Brugada classification, choose Transfer Learning (In-domain DAE to Classifier).

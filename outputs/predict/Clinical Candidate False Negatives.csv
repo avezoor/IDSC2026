@@ -1,0 +1,6 @@
+patient_id,target,pred_proba,pred_label,basal_pattern,sudden_death,Outcome Type
+319150,1,3.5411751468927832e-06,0,0,0,False Negative
+1370418,1,0.0001569378946442157,0,0,0,False Negative
+3080186,1,0.0032272927928715944,0,0,0,False Negative
+1207947,1,0.0041678790003061295,0,0,0,False Negative
+3043155,1,0.010227851569652557,0,0,0,False Negative

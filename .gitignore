@@ -9,7 +9,3 @@ env/
 
 .ipynb_checkpoints/
 
-outputs/
-
-datasets/files/
-datasets/files.zip
